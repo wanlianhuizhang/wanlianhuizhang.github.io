@@ -1,3106 +1,1114 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>南一宗 - 完整版</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>尽氏同行 · 服务页面</title>
     <style>
-        :root {
-            --gold: #ffd700;
-            --gold-dark: #ff8c00;
-            --blue: #4d9fff;
-            --red: #ff6b6b;
-            --purple: #c44dff;
-            --bg-dark: #1a1a2e;
-            --bg-mid: #16213e;
-            --bg-light: #0f3460;
-            --text-muted: #a0a0a0;
-            --border-color: #333;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin:0; padding:0; box-sizing: border-box; }
 
         body {
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-mid) 50%, var(--bg-light) 100%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* ========== 通用组件 ========== */
-        .screen { 
-            display: none; 
-            padding: 20px; 
-            max-width: 1400px; 
-            margin: 0 auto;
-            animation: fadeIn 0.4s ease-out;
-        }
-        .screen.active { display: block; }
-
-        .btn {
-            padding: 12px 30px;
-            margin: 10px;
-            font-size: 18px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-            color: var(--bg-dark);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: bold;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 20px rgba(255,215,0,0.4);
-        }
-        .btn:hover::after { left: 100%; }
-        .btn:active { transform: translateY(0); }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #444, #222);
-            color: #fff;
-            border: 1px solid #555;
-        }
-        .btn-secondary:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-
-        .btn-blue {
-            background: linear-gradient(135deg, var(--blue), #2a5fff);
-            color: #fff;
-        }
-        .btn-blue:hover { box-shadow: 0 5px 20px rgba(77,159,255,0.4); }
-
-        .btn-red {
-            background: linear-gradient(135deg, var(--red), #cc4444);
-            color: #fff;
-        }
-        .btn-red:hover { box-shadow: 0 5px 20px rgba(255,107,107,0.4); }
-
-        h1 { 
-            color: var(--gold); 
-            text-align: center; 
-            font-size: 48px; 
-            margin-bottom: 20px; 
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
-            letter-spacing: 4px;
-        }
-        h2 { color: #fff; margin: 20px 0; font-weight: 600; }
-        h3 { color: var(--gold); }
-
-        .card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
+            background: #0d0b0a;
+            color: #e8e0d8;
+            font-family: 'Georgia', 'Songti SC', serif;
+            line-height: 1.7;
             padding: 20px;
-            transition: all 0.3s;
-        }
-        .card:hover { border-color: var(--gold); transform: translateY(-3px); }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .badge-SSR { background: rgba(255,107,107,0.2); color: var(--red); border: 1px solid var(--red); }
-        .badge-SR { background: rgba(196,77,255,0.2); color: var(--purple); border: 1px solid var(--purple); }
-        .badge-R { background: rgba(77,159,255,0.2); color: var(--blue); border: 1px solid var(--blue); }
-        .badge-N { background: rgba(100,100,100,0.2); color: #888; border: 1px solid #666; }
-
-        /* ========== 启动界面 ========== */
-        #startScreen {
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        #startScreen::before {
-            content: '';
-            position: absolute;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        #startScreen h1 { 
-            font-size: 80px; 
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        #startScreen .subtitle { 
-            font-size: 28px; 
-            color: var(--text-muted); 
-            margin-bottom: 60px;
-            position: relative;
-            z-index: 1;
-            letter-spacing: 8px;
-        }
-        #startScreen .version {
-            position: absolute;
-            bottom: 20px;
-            right: 30px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        /* ========== 主菜单 ========== */
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-        }
-
-        .status-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-        .status-item .icon { font-size: 24px; }
-        .status-item .value { color: var(--gold); font-weight: bold; font-size: 22px; }
-        .status-item .label { color: var(--text-muted); font-size: 14px; }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .menu-card {
-            padding: 40px;
-            border: 2px solid var(--gold);
-            border-radius: 20px;
-            background: rgba(255,215,0,0.05);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
-            transform: scaleX(0);
-            transition: transform 0.4s;
-        }
-
-        .menu-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 40px rgba(255,215,0,0.2);
-            background: rgba(255,215,0,0.08);
-        }
-        .menu-card:hover::before { transform: scaleX(1); }
-        .menu-card .icon { font-size: 64px; margin-bottom: 20px; display: block; }
-        .menu-card h3 { color: var(--gold); font-size: 28px; margin-bottom: 15px; }
-        .menu-card p { color: var(--text-muted); font-size: 16px; }
-        .menu-card .difficulty {
-            margin-top: 15px;
-            padding: 5px 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            font-size: 14px;
-            display: inline-block;
-        }
-
-        /* ========== 抽卡系统 ========== */
-        .gacha-pool {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .gacha-card {
-            padding: 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gacha-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .gacha-card:hover::after { opacity: 1; }
-
-        .gacha-card.rarity-SSR { border-color: var(--red); background: rgba(255,107,107,0.1); }
-        .gacha-card.rarity-SR { border-color: var(--purple); background: rgba(196,77,255,0.1); }
-        .gacha-card.rarity-R { border-color: var(--blue); background: rgba(77,159,255,0.1); }
-        .gacha-card.rarity-N { border-color: #666; }
-
-        .gacha-card .char-name { font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .gacha-card .char-info { color: var(--text-muted); font-size: 14px; }
-        .gacha-card .char-stats { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 10px; 
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        .gacha-card .stat { background: rgba(0,0,0,0.3); padding: 5px; border-radius: 5px; }
-        .gacha-card .stat-label { color: var(--text-muted); font-size: 12px; }
-        .gacha-card .stat-value { color: var(--gold); font-weight: bold; }
-
-        .gacha-result-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .gacha-result-card {
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            animation: gachaReveal 0.6s ease-out;
-            position: relative;
-        }
-
-        @keyframes gachaReveal {
-            0% { transform: scale(0) rotateY(180deg); opacity: 0; }
-            50% { transform: scale(1.1) rotateY(90deg); }
-            100% { transform: scale(1) rotateY(0deg); opacity: 1; }
-        }
-
-        .gacha-result-card.new-char {
-            box-shadow: 0 0 30px rgba(255,215,0,0.3);
-            animation: gachaReveal 0.6s ease-out, newCharGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes newCharGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-            50% { box-shadow: 0 0 40px rgba(255,215,0,0.6); }
-        }
-
-        /* ========== 战斗系统 ========== */
-        .battle-field {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 30px;
-            position: relative;
-        }
-
-        .battle-field::before {
-            content: 'VS';
-            position: absolute;
-            left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px;
-            font-weight: bold;
-            color: var(--gold);
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
-            z-index: 10;
-        }
-
-        .team-display {
-            padding: 25px;
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(5px);
-        }
-        .team-display.player { border-color: var(--blue); }
-        .team-display.enemy { border-color: var(--red); }
-
-        .team-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .team-header h2 { margin: 0; }
-        .team-power {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        .team-power span { color: var(--gold); font-weight: bold; }
-
-        .character-card {
-            padding: 20px;
-            margin: 15px 0;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .character-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0;
-            width: 4px; height: 100%;
-            background: var(--gold);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .character-card:hover::before { opacity: 1; }
-        .character-card.active { 
-            border-color: var(--gold); 
-            background: rgba(255,215,0,0.1);
-            box-shadow: 0 0 20px rgba(255,215,0,0.2);
-        }
-        .character-card.active::before { opacity: 1; }
-        .character-card.dead { opacity: 0.3; border-color: #444; filter: grayscale(100%); }
-        .character-card.targeted { border-color: var(--red); animation: targetPulse 1s infinite; }
-
-        @keyframes targetPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,107,0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(255,107,107,0); }
-        }
-
-        .char-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .char-name-display { font-size: 20px; font-weight: bold; }
-        .char-realm { font-size: 13px; color: var(--text-muted); }
-
-        .hp-bar-container {
-            margin: 12px 0;
-        }
-        .hp-bar-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-        .hp-bar {
+        .container {
+            max-width: 860px;
             width: 100%;
-            height: 24px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 12px;
-            overflow: hidden;
+            background: #171311;
+            padding: 50px 40px;
+            border-radius: 18px;
+            box-shadow: 0 0 80px rgba(180, 80, 30, 0.06);
+            border: 1px solid #2f2824;
             position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .hp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff4444 0%, #ffaa00 50%, #44ff44 100%);
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 12px;
-            position: relative;
-        }
-        .hp-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 50%);
-        }
-        .hp-text {
-            position: absolute;
-            left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-            z-index: 2;
         }
 
-        .buff-bar {
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #5a4036, transparent);
+            margin: 36px 0;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #f0e4da;
+            margin-bottom: 6px;
+        }
+
+        .header .sub {
+            font-size: 14px;
+            color: #8a7a70;
+            letter-spacing: 2px;
+        }
+
+        .header .sub span {
+            color: #b87a5a;
+            margin: 0 6px;
+        }
+
+        .section {
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #dccfc6;
+            border-left: 3px solid #b87a5a;
+            padding-left: 14px;
+            margin-bottom: 14px;
+        }
+
+        .section p {
+            font-size: 15px;
+            color: #cdc0b6;
+            margin-bottom: 12px;
+            text-indent: 2em;
+        }
+
+        .section p.no-indent {
+            text-indent: 0;
+        }
+
+        .contact-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
-            min-height: 28px;
+            gap: 12px 24px;
+            background: #1f1a17;
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin: 18px 0 6px;
+            border: 1px solid #2f2824;
         }
-        .buff-icon {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            animation: buffIn 0.3s ease-out;
-        }
-        @keyframes buffIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .buff-positive { background: rgba(77,255,159,0.2); border: 1px solid #4dff9f; color: #4dff9f; }
-        .buff-negative { background: rgba(255,107,107,0.2); border: 1px solid var(--red); color: var(--red); }
-        .buff-neutral { background: rgba(255,215,0,0.2); border: 1px solid var(--gold); color: var(--gold); }
 
-        .skill-buttons {
+        .contact-grid .item {
+            font-size: 14px;
+            color: #dccfc6;
+        }
+
+        .contact-grid .item strong {
+            color: #b87a5a;
+            font-weight: 400;
+            margin-right: 4px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 14px 0 6px;
+        }
+
+        .price-table th {
+            text-align: left;
+            padding: 8px 6px 8px 0;
+            color: #8a7a70;
+            font-weight: 400;
+            border-bottom: 1px solid #2f2824;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .price-table td {
+            padding: 8px 6px 8px 0;
+            border-bottom: 1px solid #1f1a17;
+            color: #cdc0b6;
+        }
+
+        .price-table .name {
+            color: #e8e0d8;
+        }
+
+        .price-table .price {
+            text-align: right;
+            color: #dccfc6;
+            white-space: nowrap;
+        }
+
+        .price-table .highlight {
+            color: #c49a7a;
+        }
+
+        .price-table .tag {
+            font-size: 11px;
+            color: #6a5a50;
+            margin-left: 8px;
+        }
+
+        .member-box {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .skill-btn {
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid var(--blue);
-            border-radius: 8px;
-            background: rgba(77,159,255,0.1);
-            color: var(--blue);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .skill-btn:hover:not(:disabled) { 
-            background: rgba(77,159,255,0.3); 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(77,159,255,0.3);
-        }
-        .skill-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .skill-btn.selected {
-            background: rgba(255,215,0,0.2);
-            border-color: var(--gold);
-            color: var(--gold);
-            box-shadow: 0 0 15px rgba(255,215,0,0.3);
-        }
-        .skill-btn .cooldown {
-            position: absolute;
-            top: 2px; right: 5px;
-            font-size: 11px;
-            color: var(--red);
+            gap: 16px;
+            margin: 16px 0 8px;
         }
 
-        .battle-log {
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            background: rgba(0,0,0,0.6);
-            max-height: 350px;
-            overflow-y: auto;
-            margin-top: 30px;
-            font-size: 15px;
+        @media (max-width: 600px) {
+            .member-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .member-card {
+            background: #1f1a17;
+            padding: 18px 20px;
+            border-radius: 10px;
+            border: 1px solid #2f2824;
+        }
+
+        .member-card h4 {
+            font-size: 16px;
+            font-weight: 400;
+            color: #dccfc6;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .member-card .discount {
+            font-size: 22px;
+            color: #b87a5a;
+        }
+
+        .member-card .price-row {
+            font-size: 14px;
+            color: #cdc0b6;
+            margin: 6px 0 4px;
+        }
+
+        .member-card .price-row span {
+            color: #8a7a70;
+            font-size: 13px;
+        }
+
+        .member-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 4px;
+        }
+
+        .member-card ul li {
+            font-size: 13px;
+            color: #b0a298;
+            padding: 3px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .member-card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #b87a5a;
+        }
+
+        .sanfa-wrapper {
+            background: radial-gradient(ellipse at 30% 20%, rgba(80, 40, 20, 0.25), transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(40, 20, 10, 0.15), transparent 60%),
+                #1a1512;
+            border-radius: 16px;
+            padding: 28px 24px 24px;
+            border: 1px solid #3f322a;
+            margin: 14px 0 6px;
+            position: relative;
+            box-shadow: inset 0 0 60px rgba(60, 30, 15, 0.1);
+        }
+
+        .sanfa-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #7a5a4a, transparent);
+        }
+
+        .sanfa-wrapper .sanfa-label {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: #5a4a40;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .sanfa-wrapper .sanfa-label span {
+            color: #7a5a4a;
+        }
+
+        .sanfa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 700px) {
+            .sanfa-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .sanfa-card {
+            background: rgba(20, 16, 14, 0.6);
+            border-radius: 12px;
+            padding: 22px 20px 20px;
+            text-align: center;
+            border: 1px solid #2f2824;
+            position: relative;
+            backdrop-filter: blur(4px);
+        }
+
+        .sanfa-card .sanfa-level {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #5a4a40;
+            margin-bottom: 4px;
+        }
+
+        .sanfa-card .sanfa-name {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin: 2px 0 4px;
+        }
+
+        .sanfa-card .sanfa-price {
+            font-size: 28px;
+            font-weight: 300;
+            margin: 6px 0 4px;
+        }
+
+        .sanfa-card .sanfa-sub {
+            font-size: 12px;
+            color: #6a5a50;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .sanfa-card .sanfa-desc {
+            font-size: 13px;
+            color: #b0a298;
+            line-height: 1.7;
+            margin: 8px 0 4px;
+        }
+
+        .sanfa-card .sanfa-tag {
+            display: inline-block;
+            font-size: 11px;
+            color: #5a4a40;
+            border: 1px solid #2f2824;
+            padding: 2px 14px;
+            border-radius: 20px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .sanfa-card.tian {
+            border-color: #7a5a3a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(160, 120, 80, 0.08), transparent 60%);
+        }
+        .sanfa-card.tian .sanfa-name {
+            color: #d4b08a;
+        }
+        .sanfa-card.tian .sanfa-price {
+            color: #d4b08a;
+        }
+        .sanfa-card.tian::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #b08a6a, transparent);
+        }
+
+        .sanfa-card.di {
+            border-color: #4a5a4a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(60, 90, 70, 0.08), transparent 60%);
+        }
+        .sanfa-card.di .sanfa-name {
+            color: #8ab08a;
+        }
+        .sanfa-card.di .sanfa-price {
+            color: #8ab08a;
+        }
+        .sanfa-card.di::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #6a8a6a, transparent);
+        }
+
+        .sanfa-card.ren {
+            border-color: #5a4a5a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(100, 70, 120, 0.08), transparent 60%);
+        }
+        .sanfa-card.ren .sanfa-name {
+            color: #b08ab0;
+        }
+        .sanfa-card.ren .sanfa-price {
+            color: #b08ab0;
+        }
+        .sanfa-card.ren::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #8a6a8a, transparent);
+        }
+
+        /* 三法限额规则 */
+        .sanfa-rule {
+            font-size: 12px;
+            color: #6a5a50;
+            border-top: 1px solid #2a2220;
+            padding: 10px 0 4px 0;
+            margin-top: 12px;
             line-height: 1.8;
         }
-        .battle-log::-webkit-scrollbar { width: 6px; }
-        .battle-log::-webkit-scrollbar-track { background: transparent; }
-        .battle-log::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
-        .log-entry { 
-            margin: 8px 0; 
-            padding: 8px 12px; 
-            border-radius: 8px;
-            border-left: 3px solid transparent;
-            animation: logIn 0.3s ease-out;
+        .sanfa-rule .highlight {
+            color: #b87a5a;
         }
-        @keyframes logIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .log-player { color: var(--blue); border-left-color: var(--blue); background: rgba(77,159,255,0.05); }
-        .log-enemy { color: var(--red); border-left-color: var(--red); background: rgba(255,107,107,0.05); }
-        .log-info { color: var(--gold); border-left-color: var(--gold); background: rgba(255,215,0,0.05); }
-        .log-damage { color: #ff6b6b; font-weight: bold; }
-        .log-heal { color: #4dff9f; font-weight: bold; }
-        .log-buff { color: var(--purple); font-weight: bold; }
 
-        .battle-actions {
+        .sanfa-rule .strong {
+            color: #dccfc6;
+        }
+
+        .sanfa-note {
             text-align: center;
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            font-size: 13px;
+            color: #5a4a40;
+            margin-top: 18px;
+            letter-spacing: 1px;
+            border-top: 1px solid #2f2824;
+            padding-top: 16px;
         }
 
-        .turn-indicator {
+        .sanfa-note strong {
+            color: #7a5a4a;
+            font-weight: 400;
+        }
+
+        .footer-note {
             text-align: center;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            animation: turnPulse 2s infinite;
-        }
-        .turn-player { background: rgba(77,159,255,0.1); border: 1px solid var(--blue); color: var(--blue); }
-        .turn-enemy { background: rgba(255,107,107,0.1); border: 1px solid var(--red); color: var(--red); }
-
-        @keyframes turnPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* ========== 弹幕特效系统 ========== */
-        .danmaku-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            overflow: hidden;
-        }
-
-        .danmaku {
-            position: absolute;
-            white-space: nowrap;
-            font-weight: bold;
-            font-size: 20px;
-            text-shadow: 0 0 10px currentColor;
-            pointer-events: none;
-            animation: danmakuFloat 3s linear forwards;
-        }
-
-        @keyframes danmakuFloat {
-            0% { transform: translateX(100vw); opacity: 1; }
-            100% { transform: translateX(-100%); opacity: 0; }
-        }
-
-        .damage-popup {
-            position: absolute;
-            font-size: 28px;
-            font-weight: bold;
-            pointer-events: none;
-            animation: damagePopup 1.2s ease-out forwards;
-            z-index: 100;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        @keyframes damagePopup {
-            0% { transform: translateY(0) scale(0.5); opacity: 0; }
-            20% { transform: translateY(-20px) scale(1.3); opacity: 1; }
-            100% { transform: translateY(-80px) scale(1); opacity: 0; }
-        }
-
-        .skill-effect {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: skillBurst 0.8s ease-out forwards;
-            z-index: 50;
-        }
-
-        @keyframes skillBurst {
-            0% { transform: scale(0); opacity: 1; }
-            50% { transform: scale(2); opacity: 0.8; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
-        .screen-shake {
-            animation: screenShake 0.5s ease-out;
-        }
-
-        @keyframes screenShake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-10px); }
-            40% { transform: translateX(10px); }
-            60% { transform: translateX(-5px); }
-            80% { transform: translateX(5px); }
-        }
-
-        /* ========== 关卡系统 ========== */
-        .level-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .level-card {
-            padding: 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            background: rgba(255,255,255,0.03);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .level-card:hover:not(.locked) { 
-            border-color: var(--gold); 
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255,215,0,0.1);
-        }
-        .level-card.locked { opacity: 0.4; border-color: #222; }
-        .level-card.completed { border-color: #4dff9f; }
-        .level-card.boss-level { border-color: var(--red); background: rgba(255,107,107,0.05); }
-        .level-card.boss-level:hover:not(.locked) { border-color: #ff4444; box-shadow: 0 10px 30px rgba(255,107,107,0.2); }
-
-        .level-card .level-num {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-        .level-card .level-name {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .level-card .level-location {
             font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-        .level-card .difficulty-stars {
-            color: var(--gold);
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        .level-card .level-rewards {
-            display: flex;
-            gap: 10px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .level-card .level-rewards span { color: var(--gold); }
-
-        .location-section {
-            margin: 40px 0;
-        }
-        .location-section h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(255,215,0,0.3);
-            margin-bottom: 25px;
-        }
-        .location-section h2::before {
-            content: '';
-            display: inline-block;
-            width: 8px; height: 28px;
-            background: var(--gold);
-            border-radius: 4px;
-        }
-
-        /* ========== 队伍管理 ========== */
-        .team-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            color: #5a4a40;
             margin-top: 30px;
+            letter-spacing: 1px;
+            border-top: 1px solid #2f2824;
+            padding-top: 24px;
         }
 
-        .team-panel {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 25px;
-        }
-        .team-panel h2 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .team-panel .count { color: var(--gold); font-size: 18px; }
-
-        .team-member {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            transition: all 0.3s;
-        }
-        .team-member:hover { border-color: var(--gold); transform: translateX(5px); }
-        .team-member .member-avatar {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--bg-dark);
-            flex-shrink: 0;
-        }
-        .team-member .member-info { flex: 1; }
-        .team-member .member-name { font-size: 18px; font-weight: bold; }
-        .team-member .member-detail { font-size: 13px; color: var(--text-muted); }
-        .team-member .member-actions { display: flex; gap: 8px; }
-        .team-member .member-actions button {
-            padding: 5px 12px;
-            font-size: 13px;
-            border-radius: 6px;
-            border: none;
+        .footer-note .clickable {
+            display: inline-block;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .team-member .btn-remove { background: rgba(255,107,107,0.2); color: var(--red); border: 1px solid var(--red); }
-        .team-member .btn-remove:hover { background: var(--red); color: #fff; }
-        .team-member .btn-main { background: rgba(255,215,0,0.2); color: var(--gold); border: 1px solid var(--gold); }
-        .team-member.fixed { border-color: var(--gold); background: rgba(255,215,0,0.05); }
-        .team-member.fixed .member-avatar { box-shadow: 0 0 15px rgba(255,215,0,0.5); }
-
-        .char-list {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .char-list::-webkit-scrollbar { width: 6px; }
-        .char-list::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
-
-        .char-list-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-        .char-list-item:hover { border-color: var(--blue); background: rgba(77,159,255,0.05); transform: translateX(5px); }
-        .char-list-item .char-rarity-indicator {
-            width: 4px; height: 40px;
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
-        .char-list-item.rarity-SSR .char-rarity-indicator { background: var(--red); }
-        .char-list-item.rarity-SR .char-rarity-indicator { background: var(--purple); }
-        .char-list-item.rarity-R .char-rarity-indicator { background: var(--blue); }
-        .char-list-item.rarity-N .char-rarity-indicator { background: #666; }
-        .char-list-item .char-list-info { flex: 1; }
-        .char-list-item .char-list-name { font-weight: bold; }
-        .char-list-item .char-list-meta { font-size: 12px; color: var(--text-muted); }
-        .char-list-item .char-list-stats { font-size: 12px; color: var(--gold); }
-        .char-list-item.in-team { opacity: 0.4; cursor: not-allowed; }
-        .char-list-item .in-team-badge {
-            position: absolute;
-            top: 5px; right: 5px;
-            padding: 2px 8px;
-            background: var(--gold);
-            color: var(--bg-dark);
-            font-size: 11px;
+            padding: 4px 12px;
             border-radius: 4px;
-            font-weight: bold;
-        }
-
-        /* ========== 弹窗系统 ========== */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s;
-        }
-        .modal-overlay.active { display: flex; }
-
-        .modal-content {
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid));
-            border: 2px solid var(--gold);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes modalIn {
-            from { transform: scale(0.8) translateY(50px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
-        }
-
-        .modal-content h2 { 
-            color: var(--gold); 
-            font-size: 32px; 
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        .modal-content p { 
-            color: var(--text-muted); 
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-            font-size: 18px;
-        }
-        .modal-content .modal-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .modal-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            display: block;
-            animation: bounce 1s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* ========== 动画库 ========== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes attackFlash {
-            0% { transform: translateX(0) scale(1); }
-            25% { transform: translateX(30px) scale(1.05); }
-            50% { transform: translateX(-10px) scale(0.95); }
-            100% { transform: translateX(0) scale(1); }
-        }
-        .attack-animation { animation: attackFlash 0.6s ease-out; }
-
-        @keyframes damageFlash {
-            0% { background: rgba(255,107,107,0.6); transform: scale(1.02); }
-            100% { background: transparent; transform: scale(1); }
-        }
-        .damage-animation { animation: damageFlash 0.5s ease-out; }
-
-        @keyframes healFlash {
-            0% { background: rgba(77,255,159,0.4); }
-            100% { background: transparent; }
-        }
-        .heal-animation { animation: healFlash 0.8s ease-out; }
-
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .slide-in-left { animation: slideInLeft 0.5s ease-out; }
-        .slide-in-right { animation: slideInRight 0.5s ease-out; }
-
-        /* ========== 响应式 ========== */
-        @media (max-width: 768px) {
-            h1 { font-size: 36px; }
-            .menu-grid { grid-template-columns: 1fr; }
-            .battle-field { grid-template-columns: 1fr; }
-            .battle-field::before { display: none; }
-            .team-container { grid-template-columns: 1fr; }
-            .status-bar { flex-wrap: wrap; gap: 10px; }
-            .level-grid { grid-template-columns: 1fr; }
-            .gacha-pool { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            .btn { padding: 10px 20px; font-size: 16px; }
-            .character-card { padding: 15px; }
-            .skill-buttons { grid-template-columns: 1fr; }
-        }
-
-        /* ========== 加载动画 ========== */
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--bg-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            transition: opacity 0.5s;
-        }
-        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
-
-        .loading-spinner {
-            width: 60px; height: 60px;
-            border: 4px solid rgba(255,215,0,0.2);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .loading-text {
-            margin-top: 20px;
-            color: var(--gold);
-            font-size: 18px;
+            transition: background 0.2s;
+            user-select: none;
             letter-spacing: 4px;
+            color: #6a5a50;
         }
 
-        /* ========== 提示系统 ========== */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 2500;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .footer-note .clickable:hover {
+            background: rgba(180, 80, 30, 0.06);
+            color: #8a7a70;
         }
 
-        .toast {
-            padding: 15px 25px;
+        #blackMagicSection {
+            display: none;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #3f322a;
+        }
+
+        #blackMagicSection.visible {
+            display: block;
+        }
+
+        .black-magic-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .black-magic-header h2 {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #d4c4b8;
+        }
+
+        .black-magic-header .sub {
+            font-size: 13px;
+            color: #6a5a50;
+            letter-spacing: 3px;
+        }
+
+        .warning-box {
+            background: #1a1412;
+            border: 1px solid #3a2a24;
             border-radius: 10px;
-            color: #fff;
-            font-weight: bold;
-            animation: toastIn 0.4s ease-out, toastOut 0.4s ease-in 2.6s forwards;
-            max-width: 350px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            padding: 20px 24px;
+            margin: 14px 0;
+            border-left: 3px solid #7a3a2a;
+        }
+
+        .warning-box strong {
+            color: #b07a6a;
+        }
+
+        .warning-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0;
+        }
+
+        .warning-box ul li {
+            font-size: 14px;
+            color: #b0a098;
+            padding: 4px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .warning-box ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #5a3a32;
+        }
+
+        .black-magic-section .section-title {
+            border-left-color: #7a3a2a;
+        }
+
+        .course-note {
+            background: #1a1512;
+            border: 1px solid #2f2824;
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 14px 0;
+            font-size: 14px;
+            color: #b0a298;
+            line-height: 1.8;
+        }
+
+        .course-note strong {
+            color: #b87a5a;
+            font-weight: 400;
+        }
+
+        .surcharge-note {
+            font-size: 12px;
+            color: #6a5a50;
+            border-top: 1px solid #2a2220;
+            border-bottom: 1px solid #2a2220;
+            padding: 8px 0;
+            margin: 10px 0 16px 0;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 24px;
+            letter-spacing: 0.3px;
         }
-        @keyframes toastIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        .surcharge-note span {
+            color: #8a7a70;
         }
-        @keyframes toastOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+
+        .surcharge-note strong {
+            color: #b87a5a;
+            font-weight: 400;
         }
-        .toast-success { background: linear-gradient(135deg, #2ecc71, #27ae60); border-left: 4px solid #1e8449; }
-        .toast-error { background: linear-gradient(135deg, #e74c3c, #c0392b); border-left: 4px solid #922b21; }
-        .toast-warning { background: linear-gradient(135deg, #f39c12, #e67e22); border-left: 4px solid #d35400; }
-        .toast-info { background: linear-gradient(135deg, #3498db, #2980b9); border-left: 4px solid #1a5276; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 18px;
+            }
+            .surcharge-note {
+                font-size: 11px;
+                gap: 6px 14px;
+                padding: 6px 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- 加载画面 -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div style="text-align: center;">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">正在加载...</div>
-        </div>
-    </div>
+    <div class="container">
 
-    <!-- 弹幕容器 -->
-    <div id="danmakuContainer" class="danmaku-container"></div>
+        <!-- ===== 主页面 ===== -->
+        <div id="mainPage">
 
-    <!-- Toast容器 -->
-    <div id="toastContainer" class="toast-container"></div>
-
-    <!-- 弹窗系统 -->
-    <div id="modalOverlay" class="modal-overlay">
-        <div class="modal-content">
-            <span id="modalIcon" class="modal-icon"></span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalMessage"></p>
-            <div class="modal-actions" id="modalActions"></div>
-        </div>
-    </div>
-
-    <!-- 启动界面 -->
-    <div id="startScreen" class="screen active">
-        <h1>南一宗</h1>
-        <p class="subtitle">万道归宗 · 极致自由</p>
-        <button class="btn" onclick="Game.start()" style="font-size: 22px; padding: 18px 50px;">开始游戏</button>
-        <div class="version">v2.0 优化版</div>
-    </div>
-
-    <!-- 主菜单 -->
-    <div id="mainMenu" class="screen">
-        <div class="status-bar">
-            <div class="status-item">
-                <span class="icon">🎴</span>
-                <span class="value" id="gachaTicketsDisplay">3</span>
-                <span class="label">招募券</span>
-            </div>
-            <div class="status-item">
-                <span class="icon">👥</span>
-                <span class="value" id="charactersCountDisplay">1</span>
-                <span class="label">角色</span>
-            </div>
-            <div class="status-item">
-                <span class="icon">⚔️</span>
-                <span class="value" id="levelDisplay">1</span>
-                <span class="label">关卡</span>
-            </div>
-            <div class="status-item">
-                <span class="icon">💎</span>
-                <span class="value" id="crystalDisplay">0</span>
-                <span class="label">灵石</span>
-            </div>
-        </div>
-
-        <div class="menu-grid">
-            <div class="menu-card" onclick="Game.showScreen('freeBattle')">
-                <span class="icon">⚔️</span>
-                <h3>自由对战</h3>
-                <p>与其他玩家切磋，测试实力</p>
-                <div class="difficulty">实时PVP</div>
-            </div>
-
-            <div class="menu-card" onclick="Game.showScreen('levelChallenge')">
-                <span class="icon">🗡️</span>
-                <h3>关卡挑战</h3>
-                <p>挑战各路强者，恢复南一宗荣光</p>
-                <div class="difficulty">共49关</div>
-            </div>
-
-            <div class="menu-card" onclick="Game.showScreen('team')">
-                <span class="icon">👥</span>
-                <h3>队伍管理</h3>
-                <p>调整阵容，强化战力</p>
-                <div class="difficulty" id="teamPowerDisplay">战力: 0</div>
-            </div>
-
-            <div class="menu-card" onclick="Game.showScreen('gacha')">
-                <span class="icon">🎴</span>
-                <h3>抽卡招募</h3>
-                <p>招募强力角色，扩充阵容</p>
-                <div class="difficulty">UP: 苏清衍</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 自由对战 -->
-    <div id="freeBattle" class="screen">
-        <h1>⚔️ 自由对战</h1>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="btn btn-secondary" onclick="Game.showScreen('mainMenu')">返回主菜单</button>
-        </div>
-        <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-            <div style="font-size: 64px; margin-bottom: 20px;">🚧</div>
-            <h2 style="color: var(--gold);">自由对战系统</h2>
-            <p style="font-size: 18px; margin-top: 15px;">此功能需要服务器支持，当前版本暂未开放</p>
-            <p style="font-size: 14px; margin-top: 10px;">敬请期待后续更新...</p>
-        </div>
-    </div>
-
-    <!-- 关卡挑战 -->
-    <div id="levelChallenge" class="screen">
-        <h1>🗡️ 关卡挑战</h1>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="btn btn-secondary" onclick="Game.showScreen('mainMenu')">返回主菜单</button>
-        </div>
-        <div id="levelList"></div>
-    </div>
-
-    <!-- 抽卡系统 -->
-    <div id="gacha" class="screen">
-        <h1>🎴 抽卡招募</h1>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="btn btn-secondary" onclick="Game.showScreen('mainMenu')">返回主菜单</button>
-        </div>
-
-        <div style="text-align: center; margin: 30px 0;">
-            <h2 style="color: var(--gold);">本期UP角色</h2>
-            <div class="gacha-card rarity-SSR" style="max-width: 320px; margin: 20px auto;">
-                <span class="badge badge-SSR">SSR</span>
-                <h3 style="color: var(--red); font-size: 28px; margin: 15px 0;">苏清衍</h3>
-                <p style="color: #aaa;">天道阁 · 引气·归元</p>
-                <div class="char-stats" style="margin-top: 20px;">
-                    <div class="stat"><div class="stat-label">生命</div><div class="stat-value">400</div></div>
-                    <div class="stat"><div class="stat-label">攻击</div><div class="stat-value">33</div></div>
-                    <div class="stat"><div class="stat-label">防御</div><div class="stat-value">15</div></div>
-                </div>
-                <div style="margin-top: 15px; font-size: 14px; color: var(--red);">
-                    <div>🔥 UP角色 · 概率提升50%</div>
-                    <div style="margin-top: 5px; color: var(--gold);">技能: 时渊裂隙 / 因果律·轮回</div>
+            <div class="header">
+                <h1>尽氏同行</h1>
+                <div class="sub">尽燚帝君 · 走江湖的人</div>
+                <div style="margin-top:10px; font-size:13px; color:#5a4a40;">
+                    <span>不拜三清</span><span>·</span>
+                    <span>不归天庭</span><span>·</span>
+                    <span>不听宣</span>
                 </div>
             </div>
 
-            <h3 style="color: var(--gold); margin-top: 40px;">抽卡概率</h3>
-            <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                    <div style="font-size: 24px; color: var(--red); font-weight: bold;">0.1%</div>
-                    <div style="font-size: 14px; color: var(--text-muted);">SSR</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 24px; color: var(--purple); font-weight: bold;">4.9%</div>
-                    <div style="font-size: 14px; color: var(--text-muted);">SR</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 24px; color: var(--blue); font-weight: bold;">25%</div>
-                    <div style="font-size: 14px; color: var(--text-muted);">R</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 24px; color: #888; font-weight: bold;">70%</div>
-                    <div style="font-size: 14px; color: var(--text-muted);">N</div>
-                </div>
+            <hr class="divider" />
+
+            <!-- ===== 我是谁 ===== -->
+            <div class="section">
+                <div class="section-title">我是谁</div>
+                <p>我是尽燚帝君。一个自己走过路的人。</p>
+                <p>我不属于任何门派，不传度，不受箓。法脉从一场火开始——七岁那年我没死，火留在了我身上，十一年后我才认出它。</p>
+                <p>我只做三件事：<strong style="color:#b87a5a;">度、判、送</strong>——度亡魂、判因果、送冤怨。这是我的根本职司。对活人，我只做一件事：<strong style="color:#dccfc6;">帮你看见你看不见的部分。</strong></p>
+                <p style="font-size:12px; color:#4a3a34; text-indent:0; margin-top:6px; letter-spacing:0.5px; border-left:2px solid #2a2220; padding-left:12px;">
+                    本工作室提供传统文化咨询与个人状态管理服务，所有内容均以语言沟通、信息分析为核心，不涉及超自然承诺，不替代法律、医疗、心理等专业咨询。
+                </p>
             </div>
-            <p style="color: var(--gold); font-size: 14px;">✨ 十连保底：至少1个SR ✨</p>
-        </div>
 
-        <div style="text-align: center; margin: 40px 0;">
-            <button class="btn" onclick="GachaSystem.draw(1)" id="btnSingleDraw" style="font-size: 20px; padding: 15px 40px;">
-                单抽（<span id="singleDrawCost">1</span>招募券）
-            </button>
-            <button class="btn" onclick="GachaSystem.draw(10)" id="btnMultiDraw" style="font-size: 20px; padding: 15px 40px;">
-                十连（<span id="multiDrawCost">10</span>招募券）
-            </button>
-        </div>
+            <hr class="divider" />
 
-        <div id="gachaResult"></div>
-    </div>
+            <!-- ===== 天地人三法 ===== -->
+            <div class="section">
+                <div class="section-title">天地人三法</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0;">三法不参与折扣 · 需提前预约 · 不接急单</p>
 
-    <!-- 队伍管理 -->
-    <div id="team" class="screen">
-        <h1>👥 队伍管理</h1>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="btn btn-secondary" onclick="Game.showScreen('mainMenu')">返回主菜单</button>
-        </div>
-
-        <div class="team-container">
-            <div class="team-panel">
-                <h2>
-                    <span>当前队伍</span>
-                    <span class="count"><span id="teamCount">1</span>/6</span>
-                </h2>
-                <div id="currentTeam"></div>
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,215,0,0.05); border-radius: 10px; border: 1px solid rgba(255,215,0,0.3);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span style="color: var(--text-muted);">队伍战力</span>
-                        <span id="teamTotalPower" style="color: var(--gold); font-weight: bold; font-size: 20px;">0</span>
+                <div class="sanfa-wrapper">
+                    <div class="sanfa-label">— <span>非常</span> · 常人不触 —</div>
+                    <div class="sanfa-grid">
+                        <div class="sanfa-card tian">
+                            <div class="sanfa-level">▎天</div>
+                            <div class="sanfa-name">太乙神数</div>
+                            <div class="sanfa-price">899 元</div>
+                            <div class="sanfa-sub">观天时 · 察国运 · 断大势</div>
+                            <div class="sanfa-desc">不涉个人小事，不答日常问题。推演天时流转，审度气运走向。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
+                        <div class="sanfa-card di">
+                            <div class="sanfa-level">▎地</div>
+                            <div class="sanfa-name">奇门遁甲</div>
+                            <div class="sanfa-price">499 元</div>
+                            <div class="sanfa-sub">择方位 · 定时机 · 布格局</div>
+                            <div class="sanfa-desc">大方向判断，关键节点决策。排盘复杂，需提供明确时间与背景。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
+                        <div class="sanfa-card ren">
+                            <div class="sanfa-level">▎人</div>
+                            <div class="sanfa-name">大六壬</div>
+                            <div class="sanfa-price">188 元</div>
+                            <div class="sanfa-sub">问具体事 · 断来龙去脉</div>
+                            <div class="sanfa-desc">九宗门课体，推演发展走向。个人层面需要深度剖析之事。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: var(--text-muted);">属性加成</span>
-                        <span id="teamBonus" style="color: var(--blue); font-size: 14px;">无</span>
+
+                    <!-- 三法限额规则 -->
+                    <div class="sanfa-rule">
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 三法行前需清斋断戒</span>（太乙5日 · 奇门3日 · 大六壬1-2日），对行法者精神力消耗极大，<span class="highlight">每月三法合计仅限1单</span>，先到先得。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 紧急插单</span>：当月名额已满仍坚持加单者，<span class="highlight">加价100%</span>。此规则不与常规加急及夜间附加费叠加。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 极端情况</span>：原则上含插单每月总计不超过5单。超过5单仍强行加单者，<span class="highlight">加价1000%</span>。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:0;">
+                            <span class="strong">· 最终封顶</span>：以上所有情况合计，<span class="highlight" style="color:#c49a7a;">每月天地人三法总计不超过10单</span>。超过10单，无论加价多少，均不再受理。<span style="color:#4a3a34;">此为铁律。</span>
+                        </p>
+                    </div>
+
+                    <div class="sanfa-note">
+                        <strong>私信说明事由</strong> → 确认是否可做 → 确认后再付款<br />
+                        三法不以术娱人，不以价拒人，但以诚为引。
                     </div>
                 </div>
             </div>
 
-            <div class="team-panel">
-                <h2>
-                    <span>可招募角色</span>
-                    <span class="count" id="availableCount">0</span>
-                </h2>
-                <div id="availableCharacters" class="char-list"></div>
-            </div>
-        </div>
-    </div>
+            <hr class="divider" />
 
-    <!-- 战斗界面 -->
-    <div id="battleScreen" class="screen">
-        <h1>⚔️ 战斗</h1>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="btn btn-red" onclick="BattleSystem.retreat()">🏳️ 撤退</button>
-        </div>
+            <!-- ===== 占卜 ===== -->
+            <div class="section">
+                <div class="section-title">占卜</div>
 
-        <div id="turnIndicator" class="turn-indicator turn-player" style="display: none;">
-            我方回合 - 请选择技能和目标
-        </div>
-
-        <div class="battle-field">
-            <div class="team-display player slide-in-left">
-                <div class="team-header">
-                    <h2 style="color: var(--blue);">我方队伍</h2>
-                    <div class="team-power">战力: <span id="playerPower">0</span></div>
+                <!-- 附加费说明 -->
+                <div class="surcharge-note">
+                    <span><strong>加急</strong> +35%</span>
+                    <span><strong>夜间</strong>（20:00后）+35%</span>
+                    <span><strong>叠加</strong> 最高 +70%</span>
+                    <span style="color:#5a4a40; font-size:11px;">（天地人三法及黑魔法破解不适用）</span>
                 </div>
-                <div id="playerTeamDisplay"></div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">塔罗 · 最低门槛</p>
+                <table class="price-table">
+                    <tr><td class="name">简单问事</td><td class="price">5.9元</td><td class="tag">一牌/三牌，直问直答</td></tr>
+                    <tr><td class="name">复杂解牌</td><td class="price">9.9–13.9元</td><td class="tag">按牌阵复杂度</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">轻量级 · 9.9元</p>
+                <table class="price-table">
+                    <tr><td class="name">灵摆占卜</td><td class="price">9.9元</td><td class="tag">一问一答</td></tr>
+                    <tr><td class="name">占星骰子</td><td class="price">9.9元</td><td class="tag">三颗骰子</td></tr>
+                    <tr><td class="name">小六壬</td><td class="price">9.9元</td><td class="tag">掌上起卦</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">标准级 · 15.9–19.9元</p>
+                <table class="price-table">
+                    <tr><td class="name">梅花易数</td><td class="price">15.9元</td><td class="tag">日常决策</td></tr>
+                    <tr><td class="name">手相/面相</td><td class="price">15.9元</td><td class="tag">需清晰照片</td></tr>
+                    <tr><td class="name">六爻</td><td class="price">19.9元</td><td class="tag">纳甲装卦</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">进阶级 · 29.9–88元</p>
+                <table class="price-table">
+                    <tr><td class="name">西方占星（本命盘）</td><td class="price">29.9元</td><td class="tag">出生时间+地点</td></tr>
+                    <tr><td class="name">八字命理</td><td class="price highlight">88元</td><td class="tag">排盘+大运+流年</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin:4px 0 10px;">八字四不看：不问生死 · 不信者不看 · 心不诚不看 · 涉及他人隐私不经同意不看</div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">尽氏镖门 · 火应占（自创）</p>
+                <table class="price-table">
+                    <tr><td class="name">一事一问</td><td class="price">19.9元</td><td class="tag">直接给结论</td></tr>
+                    <tr><td class="name">事由解析</td><td class="price">39.9元</td><td class="tag">结论+原因+注意事项</td></tr>
+                    <tr><td class="name">深度对话</td><td class="price">68元</td><td class="tag">语音沟通，约20–30分钟</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:4px;">· 六态三十六卦，不借外力 · 我自己走出来的体系</div>
             </div>
 
-            <div class="team-display enemy slide-in-right">
-                <div class="team-header">
-                    <h2 style="color: var(--red);">敌方队伍</h2>
-                    <div class="team-power">战力: <span id="enemyPower">0</span></div>
+            <hr class="divider" />
+
+            <!-- ===== 副业 ===== -->
+            <div class="section">
+                <div class="section-title">副业</div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">物件类</p>
+                <table class="price-table">
+                    <tr><td class="name">老物件感应（远程）</td><td class="price">99元</td><td class="tag">拍照+来源</td></tr>
+                    <tr><td class="name">老物件感应+净化（远程）</td><td class="price">199元</td><td class="tag">感应+远程清理</td></tr>
+                    <tr><td class="name">物件深度清理（寄送）</td><td class="price">399元</td><td class="tag">邮费自理</td></tr>
+                    <tr><td class="name">随身物护持</td><td class="price">299元</td><td class="tag">开光+加持</td></tr>
+                    <tr><td class="name">老物件批量鉴定</td><td class="price">299元/批</td><td class="tag">≤5件</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">睡眠环境类</p>
+                <table class="price-table">
+                    <tr><td class="name">床位远程评估</td><td class="price">129元</td><td class="tag">布局图+床的位置</td></tr>
+                    <tr><td class="name">床位调整建议</td><td class="price">199元</td><td class="tag">评估+方案</td></tr>
+                    <tr><td class="name">床铺能量清理（远程）</td><td class="price">299元</td><td class="tag">不碰实物</td></tr>
+                    <tr><td class="name">卧室气场深度调理（远程）</td><td class="price">499元</td><td class="tag">含床位+全卧室</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">风水与宅居类</p>
+                <table class="price-table">
+                    <tr><td class="name">远程风水咨询（单点）</td><td class="price">199元</td><td class="tag">一个具体问题</td></tr>
+                    <tr><td class="name">远程风水咨询（全屋）</td><td class="price">499元</td><td class="tag">户型图+周边环境</td></tr>
+                    <tr><td class="name">实地风水勘查</td><td class="price">888–1888元</td><td class="tag">视距离+面积</td></tr>
+                    <tr><td class="name">风水布局调整（含行法）</td><td class="price">3000元起</td><td class="tag">需实地操作</td></tr>
+                    <tr><td class="name">镇宅服务（含法器）</td><td class="price">1500元起</td><td class="tag">定制镇宅方案</td></tr>
+                    <tr><td class="name">老宅综合评估（远程）</td><td class="price">399元</td><td class="tag">气场+地脉+居住建议</td></tr>
+                    <tr><td class="name">老宅深度清理（实地）</td><td class="price">3000元起</td><td class="tag">含度判送镇</td></tr>
+                    <tr><td class="name">新车/新房净场（远程）</td><td class="price">199元</td><td class="tag">入住/使用前</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">法事与实地服务</p>
+                <table class="price-table">
+                    <tr><td class="name">安葬选址与镇墓</td><td class="price">299–799元</td><td class="tag">含选址+镇墓</td></tr>
+                    <tr><td class="name">度化法事</td><td class="price">1888元起</td><td class="tag">度判送镇</td></tr>
+                    <tr><td class="name">做法事（特定需求）</td><td class="price">面议</td><td class="tag">私信说明事由</td></tr>
+                    <tr><td class="name">危险场所寻物</td><td class="price">888–1888元</td><td class="tag">坟场/废弃建筑/深山</td></tr>
+                    <tr><td class="name">危险场所代办</td><td class="price">面议</td><td class="tag">视危险程度</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">委托探险</p>
+                <table class="price-table">
+                    <tr><td class="name">短途委托探查（市内）</td><td class="price">666元</td><td class="tag">图文报告</td></tr>
+                    <tr><td class="name">短途委托探查（省内）</td><td class="price">999元</td><td class="tag">交通另计</td></tr>
+                    <tr><td class="name">长途委托探查（省外）</td><td class="price">1888元起</td><td class="tag">交通+住宿另计</td></tr>
+                    <tr><td class="name">复勘探查（多次往返）</td><td class="price">面议</td><td class="tag">反复出入同一地点</td></tr>
+                    <tr><td class="name">夜间特定时段探查</td><td class="price">原价+30%</td><td class="tag">入夜后进行的委托</td></tr>
+                    <tr><td class="name">委托拍照/取证</td><td class="price">299元起</td><td class="tag">不需要深度探查</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">杂项</p>
+                <table class="price-table">
+                    <tr><td class="name">出差/旅行护身</td><td class="price">99元</td><td class="tag">远程护持</td></tr>
+                    <tr><td class="name">宠物环境评估</td><td class="price">129元</td><td class="tag">远程查看</td></tr>
+                </table>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 符咒 ===== -->
+            <div class="section">
+                <div class="section-title">符咒</div>
+                <table class="price-table">
+                    <tr><td class="name">护身符</td><td class="price">69元</td><td class="tag">随身携带，效期七日</td></tr>
+                    <tr><td class="name">镇宅符</td><td class="price">99元</td><td class="tag">贴门框，效期一月</td></tr>
+                    <tr><td class="name">开路符</td><td class="price">79元</td><td class="tag">出行佩戴，一次行程</td></tr>
+                    <tr><td class="name">度亡符</td><td class="price">99元</td><td class="tag">丧事/祭扫</td></tr>
+                    <tr><td class="name">解怨符</td><td class="price">99元</td><td class="tag">化解怨气</td></tr>
+                    <tr><td class="name">退邪符</td><td class="price">109元</td><td class="tag">驱退邪祟</td></tr>
+                    <tr><td class="name">安眠符</td><td class="price">69元</td><td class="tag">贴床板下或枕下</td></tr>
+                    <tr><td class="name">守运符</td><td class="price">99元</td><td class="tag">守住好运，效期一月</td></tr>
+                    <tr><td class="name">招财符</td><td class="price">109元</td><td class="tag">贴钱柜，效期一月</td></tr>
+                    <tr><td class="name">引梦符</td><td class="price">79元</td><td class="tag">引导梦境，效期一夜</td></tr>
+                    <tr><td class="name">禁言符</td><td class="price">89元</td><td class="tag">封禁口舌，效期七日</td></tr>
+                    <tr><td class="name">通感符</td><td class="price">99元</td><td class="tag">增强感应</td></tr>
+                    <tr><td class="name">缚杀令</td><td class="price">299元</td><td class="tag">活捉压制，效期六个时辰</td></tr>
+                    <tr><td class="name">止杀令</td><td class="price">面议</td><td class="tag">最高级符令</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:6px;">套餐：搬家三件套（镇宅+护身+开路）219元 · 守护全家包（镇宅+护身×3）299元 · 凶宅清理包（镇宅+退邪+度亡）289元</div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 课程 ===== -->
+            <div class="section">
+                <div class="section-title">课程</div>
+
+                <div class="course-note">
+                    <p style="text-indent:0; margin-bottom:8px;"><strong>课程说明</strong></p>
+                    <p style="text-indent:0; font-size:14px; color:#b0a298; margin-bottom:6px;">在咨询课程之前，请先看完这段话。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298;">我们的课程不是“花钱买知识”，而是“花时间学本事”。这里教的每一门课——从火应占到奇门遁甲，从感应训练到度法实战——都需要你投入精力去练、去用、去反复验证，而不是听完就结束。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298; margin-top:8px;">如果你只是出于好奇、或是一时兴起想了解一下，我们不建议直接报课。你完全可以从单次咨询开始，先感受一下这个体系的氛围和节奏。等到你确实觉得“这就是我想走的方向”，再考虑学习也不迟。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298; margin-top:8px;">课程不参与会员折扣，不与任何优惠叠加。所有课程先沟通确认后再付款。</p>
                 </div>
-                <div id="enemyTeamDisplay"></div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px; margin-top:16px;">基础课程</p>
+                <table class="price-table">
+                    <tr><td class="name">静坐观火法</td><td class="price">499元</td><td class="tag">1小时，线上教学</td></tr>
+                    <tr><td class="name">感应训练入门</td><td class="price">699元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">火应占入门</td><td class="price">799元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">护身符咒绘制</td><td class="price">599元</td><td class="tag">1小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">进阶课程</p>
+                <table class="price-table">
+                    <tr><td class="name">梅花易数实战</td><td class="price">899元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">六爻实战</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">八字命理</td><td class="price">1299元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">家居风水</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">感应精修</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">高阶课程</p>
+                <table class="price-table">
+                    <tr><td class="name">奇门遁甲</td><td class="price">1999元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">大六壬</td><td class="price">1999元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">度法实战</td><td class="price">2299元</td><td class="tag">2小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">一对一定制</p>
+                <table class="price-table">
+                    <tr><td class="name">指定科目一对一（线上）</td><td class="price">1200元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">指定科目一对一（线下）</td><td class="price">2000元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">实战陪跑（线上指导）</td><td class="price">1200元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">全年私教</td><td class="price">29800元/年</td><td class="tag">不限次，线上+线下</td></tr>
+                    <tr><td class="name">师徒制（需审核）</td><td class="price">面议</td><td class="tag">长期跟随</td></tr>
+                </table>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 收徒 ===== -->
+            <div class="section">
+                <div class="section-title">收徒</div>
+                <div style="font-size:14px; color:#b0a298; line-height:1.9; padding:0 4px;">
+                    <p style="text-indent:0; margin-bottom:4px;">眼缘为先。若觉得合适，可直接收入门下。徒弟课程免费，须纳入镖局体系，不得私自开班，违者罚款无上限。</p>
+                    <p style="text-indent:0; margin-top:4px;">眼缘未过者，可申请补录。提交书面申请并缴纳申请费200元（不退）。通过者入弟子序列，未通过则不再受理。</p>
+                    <p style="text-indent:0; margin-top:8px; font-size:13px; color:#5a4a40; border-left:2px solid #2a2220; padding-left:14px;">随缘，不勉强，不解释。</p>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 会员 ===== -->
+            <div class="section">
+                <div class="section-title">会员体系</div>
+                <div style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:12px;">所有普通占卜/副业/符咒享受对应折扣 · 课程与天地人三法不参与</div>
+                <div class="member-box">
+                    <div class="member-card">
+                        <h4>普通会员</h4>
+                        <div class="discount">8.5折</div>
+                        <div class="price-row">月付 5.9元 <span>|</span> 季付 16.9元</div>
+                        <div class="price-row">半年付 32.9元 <span>|</span> 年付 58元</div>
+                        <ul>
+                            <li>编号火印符（木牌信物）</li>
+                            <li>线上交流空间</li>
+                            <li>每月一次免费问事</li>
+                            <li>所有服务 8.5 折</li>
+                        </ul>
+                    </div>
+                    <div class="member-card" style="border-color:#5a4036;">
+                        <h4>核心会员</h4>
+                        <div class="discount">7.5折</div>
+                        <div class="price-row">月付 12.9元 <span>|</span> 季付 36.9元</div>
+                        <div class="price-row">半年付 71.9元 <span>|</span> 年付 128元</div>
+                        <ul>
+                            <li>编号火印符（木牌信物）</li>
+                            <li>线上交流空间</li>
+                            <li>不限次免费问事</li>
+                            <li>所有服务 7.5 折</li>
+                            <li>每季度一次主动提醒</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 联系方式 ===== -->
+            <div class="section">
+                <div class="section-title">怎么找到我</div>
+                <div class="contact-grid">
+                    <div class="item"><strong>QQ</strong> 1397961035</div>
+                    <div class="item"><strong>微信</strong> zqxbsxx</div>
+                    <div class="item"><strong>电话</strong> 18679105201</div>
+                </div>
+                <div style="font-size:13px; color:#6a5a50; margin-top:6px;">私信说明来意 · 确认后再付款 · 不问完不收钱</div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- 底部 -->
+            <div class="footer-note" style="cursor:default;">
+                <span class="clickable" id="slogan">镖局出品，必属精品</span>
+                <br /><br />
+                我是走江湖的人，顺便帮看得见的人指一指路。<br />
+                不是大师，不收徒，不传法。<br />
+                你来了或走了，不影响我继续走自己的路。
+            </div>
+
+        </div>
+        <!-- ===== 主页面结束 ===== -->
+
+
+        <!-- ===== 黑魔法隐藏区块 ===== -->
+        <div id="blackMagicSection">
+            <div class="black-magic-header">
+                <h2>黑魔法 · 防范与揭露</h2>
+                <div class="sub">不提供任何操作指导 · 仅限防范与揭露</div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">关于黑魔法</div>
+                <p>黑魔法、巫术、诅咒、扎小人——这些东西在民间一直存在。有人信，有人用，有人受害。</p>
+                <p>我们不教授这些方法，也不提供相关操作指导。此页面只用于帮助普通人识别、防范和应对可疑的异常情况，以便在需要时判断是否需要向相关机构求助。</p>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">你可能遇到的情况</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:8px;">以下列举一些民间流传的异常迹象，仅作为常识参考，不涉及具体技术细节：</p>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            家门口或院墙外出现来历不明的包裹、纸片、布偶、红绳
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            家中无故出现异味、异响、物品移位且无法解释
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            特定家庭成员连续出现身体不适或情绪异常，多方检查无明确医学原因
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            宠物在某个特定位置持续表现恐惧或抗拒行为
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            近期与人发生严重冲突后，家中出现前述异常迹象
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            收到带有明显威胁性质的“物品”或“信息”，其来源、内容、传递方式均无法合理解释
+                        </li>
+                    </ul>
+                    <div style="font-size:13px; color:#5a4a40; margin-top:6px;">· 以上情况不能直接等同于“被施法”，但值得留意观察 ·</div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">防范建议</div>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <p style="text-indent:0; margin-bottom:10px;">如果你怀疑自己可能遇到了异常情况，以下是一些可以参考的做法：</p>
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">保留原样</strong> — 不要急于清理或移动可疑物品，先拍照记录位置和状态
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">注意记录</strong> — 记录异常开始的时间和日常变化，便于后续判断
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">保持警惕</strong> — 避免与非紧急情况下的陌生人深入讨论家中细节
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">寻求帮助</strong> — 涉及人身安全的异常情况，应及时向警方或相关机构求助
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">自己需要帮助</strong> — 如果你怀疑自己受到了影响，可以私信咨询，我会在保护你隐私的前提下给你建议
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">常见误解</div>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “黑魔法一定有效” — 大部分所谓“诅咒”只是心理暗示，真正有效的极其罕见
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “只要不碰就没事” — 有些异常情况会通过环境、气场或长期接触产生影响
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “这是迷信，不相信就没有” — 有些东西与信不信无关，它确实存在，只是还没被科学解释
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “遇到这种情况必须找大师破解” — 大部分情况可以通过物理清理、环境调整或时间自然消退
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">黑魔法破解 · 专项服务</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">本服务不参与任何折扣，需提前说明事由确认是否可接。</p>
+                <table class="price-table">
+                    <tr><td class="name">黑魔法/黑巫术破解（远程）</td><td class="price">3888元起</td><td class="tag">含感应+反制+清理+护持</td></tr>
+                    <tr><td class="name">黑魔法/黑巫术破解（实地）</td><td class="price">8888元起</td><td class="tag">需到场处理，含差旅</td></tr>
+                    <tr><td class="name">诅咒/扎小人破解（远程）</td><td class="price">2888元起</td><td class="tag">含诅咒物感应+破除+护持</td></tr>
+                    <tr><td class="name">持续性恶意干扰清除</td><td class="price">5888元起</td><td class="tag">长期被盯上的情况</td></tr>
+                    <tr><td class="name">反噬清理（自己试过但出问题了）</td><td class="price">4888元起</td><td class="tag">你来收尾</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:6px;">· 不接“我觉得有人搞我”但无任何证据的情况 · 不承诺一定解决，但会尽力 · 差旅费另算</div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">配合警方</div>
+                <div class="warning-box">
+                    <p style="text-indent:0; font-size:15px;">
+                        <strong>如果涉及人身安全、财产损失或违法行为，我们会配合警方处理。</strong>
+                    </p>
+                    <p style="text-indent:0; font-size:14px; color:#b0a098;">
+                        我们不会主动介入任何涉及违法行为的案件，也不提供任何可用于伤害他人的术法指导。如有涉及违反法律法规的情况，我们将依法配合公安机关调查。
+                    </p>
+                    <ul>
+                        <li>不提供任何形式的“报复”或“反击”指导</li>
+                        <li>不参与任何非法行为</li>
+                        <li>如果确认对方的行为已触犯法律，建议优先报警</li>
+                        <li>可在征得警方同意的前提下提供相关专业咨询</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">私信咨询</div>
+                <p>如果你确实遇到了异常情况，可以通过以下方式咨询。我会在保护你隐私的前提下，给出判断和建议。</p>
+                <p style="text-indent:0; font-size:14px; color:#6a5a50;">私信需要说明：你遇到了什么、什么时候开始的、有没有明显的变化。</p>
+                <div style="background:#1a1412; border:1px solid #2a2220; border-radius:10px; padding:16px 20px; margin:14px 0 6px;">
+                    <div style="font-size:14px; color:#d4c4b8; display:flex; flex-wrap:wrap; gap:10px 30px;">
+                        <span><strong style="color:#7a4a3a; font-weight:400;">QQ</strong> 1397961035</span>
+                        <span><strong style="color:#7a4a3a; font-weight:400;">微信</strong> zqxbsxx</span>
+                        <span><strong style="color:#7a4a3a; font-weight:400;">电话</strong> 18679105201</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="footer-note">
+                <span style="color:#5a3a32;">镖局出品，必属精品</span>
+                <br /><br />
+                此页面仅用于防范与揭露，不提供任何操作指导。<br />
+                我是走江湖的人，帮看得见的人指一指路。<br />
+                不是大师，不收徒，不传法。
             </div>
         </div>
+        <!-- ===== 黑魔法区块结束 ===== -->
 
-        <div class="battle-log" id="battleLog">
-            <p style="color: var(--gold); text-align: center; padding: 20px;">战斗准备就绪...</p>
-        </div>
-
-        <div class="battle-actions" id="battleActions"></div>
     </div>
 
     <script>
+        let clickCount = 0;
+        let clickTimer = null;
+        let blackMagicVisible = false;
 
-    // ========== 游戏配置 ==========
-    const CONFIG = {
-        VERSION: '2.0.0',
-        MAX_TEAM_SIZE: 6,
-        INITIAL_GACHA_TICKETS: 3,
-        INITIAL_CRYSTALS: 0,
-        GACHA_RATES: { SSR: 0.1, SR: 4.9, R: 25, N: 70 },
-        UP_CHARACTER: { id: 1, name: '苏清衍', rateBonus: 0.5 },
-        BUFF_TICK_RATE: 1000, // BUFF每秒tick一次
-        SAVE_KEY: 'nanyi_save_v2',
-        ANIMATION_SPEED: 1.0
-    };
+        document.getElementById('slogan').addEventListener('click', function(e) {
+            clickCount++;
 
-    // ========== 角色数据 ==========
-    const ALL_CHARACTERS = [
-        { id: 1, name: '苏清衍', faction: '天道阁', realm: '引气·归元', hp: 400, atk: 33, def: 15, skill1: '时渊裂隙', skill2: '因果律·轮回', rarity: 'SSR', 
-          skills: {
-            skill1: { name: '时渊裂隙', type: 'damage', power: 1.5, effect: 'time_warp', cooldown: 3, description: '撕裂时空，造成150%攻击伤害，有30%概率使目标下回合无法行动' },
-            skill2: { name: '因果律·轮回', type: 'buff', power: 0, effect: 'causal_loop', cooldown: 5, duration: 3, description: '开启因果轮回，3秒内受到的伤害有50%概率反弹给攻击者' }
-          }},
-        { id: 2, name: '夜玄宸', faction: '幽冥宗', realm: '引气·归元', hp: 378, atk: 30, def: 18, skill1: '幽冥鬼爪', skill2: '噬魂·万鬼夜行', rarity: 'SSR',
-          skills: {
-            skill1: { name: '幽冥鬼爪', type: 'damage', power: 1.4, effect: 'life_drain', cooldown: 2, description: '鬼爪撕裂敌人，造成140%伤害并恢复30%造成伤害的生命值' },
-            skill2: { name: '噬魂·万鬼夜行', type: 'aoe', power: 1.2, effect: 'fear', cooldown: 4, description: '召唤万鬼，对所有敌人造成120%伤害并降低其20%攻击力3秒' }
-          }},
-        { id: 3, name: '赤烬霄', faction: '炎煌宗', realm: '引气·归元', hp: 378, atk: 30, def: 15, skill1: '焚天陨星', skill2: '炎域·不灭真火', rarity: 'SSR',
-          skills: {
-            skill1: { name: '焚天陨星', type: 'damage', power: 1.6, effect: 'burn', cooldown: 3, description: '召唤陨星坠落，造成160%伤害并附加燃烧效果（每秒10%攻击伤害，持续3秒）' },
-            skill2: { name: '炎域·不灭真火', type: 'buff', power: 0, effect: 'flame_field', cooldown: 5, duration: 4, description: '展开炎域，每秒对随机敌人造成50%攻击伤害，持续4秒' }
-          }},
-        { id: 4, name: '叶孤锋', faction: '剑影派', realm: '引气·归元', hp: 378, atk: 30, def: 12, skill1: '万剑归宗', skill2: '剑心·无我之境', rarity: 'SSR',
-          skills: {
-            skill1: { name: '万剑归宗', type: 'damage', power: 1.8, effect: 'pierce', cooldown: 3, description: '万剑齐发，造成180%伤害并无视目标30%防御' },
-            skill2: { name: '剑心·无我之境', type: 'buff', power: 0, effect: 'sword_heart', cooldown: 5, duration: 3, description: '进入无我境界，攻击力提升50%，暴击率提升25%，持续3秒' }
-          }},
-        { id: 5, name: '幽夜烬', faction: '幽冥教', realm: '引气·归元', hp: 378, atk: 30, def: 15, skill1: '鬼门关开', skill2: '黄泉·引魂渡', rarity: 'SR',
-          skills: {
-            skill1: { name: '鬼门关开', type: 'damage', power: 1.3, effect: 'stun', cooldown: 3, description: '开启鬼门，造成130%伤害并有25%概率眩晕目标1秒' },
-            skill2: { name: '黄泉·引魂渡', type: 'heal', power: 0.8, effect: 'revive', cooldown: 6, description: '引渡黄泉之力，恢复全体队友80%攻击力的生命值，若有阵亡队友有20%概率复活' }
-          }},
-        { id: 6, name: '云疏辞', faction: '青云宗', realm: '引气·归元', hp: 378, atk: 30, def: 14, skill1: '云隐九霄', skill2: '青云·踏天步', rarity: 'SR',
-          skills: {
-            skill1: { name: '云隐九霄', type: 'damage', power: 1.2, effect: 'dodge_up', cooldown: 2, description: '隐入云霄，造成120%伤害并提升自身30%闪避率2秒' },
-            skill2: { name: '青云·踏天步', type: 'buff', power: 0, effect: 'speed_up', cooldown: 4, duration: 3, description: '踏天而行，全体队友速度提升50%，持续3秒' }
-          }},
-        { id: 7, name: '温灵汐', faction: '灵虚宗', realm: '引气·潺湲', hp: 335, atk: 27, def: 10, skill1: '灵符推斥', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '灵符推斥', type: 'control', power: 0.8, effect: 'push', cooldown: 2, description: '灵符推斥敌人，造成80%伤害并击退目标（下回合无法攻击）' }
-          }},
-        { id: 8, name: '凌惊雷', faction: '紫电宗', realm: '引气·归元', hp: 378, atk: 30, def: 15, skill1: '九霄神雷', skill2: '紫电·雷神降世', rarity: 'SR',
-          skills: {
-            skill1: { name: '九霄神雷', type: 'damage', power: 1.4, effect: 'chain_lightning', cooldown: 3, description: '召唤神雷，造成140%伤害并弹射至另一随机敌人造成50%伤害' },
-            skill2: { name: '紫电·雷神降世', type: 'aoe', power: 1.1, effect: 'paralyze', cooldown: 4, description: '雷神降世，对所有敌人造成110%伤害并有30%概率麻痹1秒' }
-          }},
-        { id: 9, name: '楚青木', faction: '苍木宗', realm: '引气·潺湲', hp: 335, atk: 27, def: 12, skill1: '百草愈灵', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '百草愈灵', type: 'heal', power: 1.0, effect: 'regen', cooldown: 2, description: '百草之力，恢复目标100%攻击力的生命值，并附加持续恢复效果（每秒20%，持续3秒）' }
-          }},
-        { id: 10, name: '雾寻尘', faction: '青冥宗', realm: '引气·潺湲', hp: 330, atk: 26, def: 11, skill1: '雾隐换位', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '雾隐换位', type: 'control', power: 0.6, effect: 'swap', cooldown: 3, description: '雾化换位，与目标交换位置并造成60%伤害' }
-          }},
-        { id: 11, name: '洛天机', faction: '天衍宗', realm: '引气·潺湲', hp: 330, atk: 26, def: 12, skill1: '预知护持', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '预知护持', type: 'buff', power: 0, effect: 'shield', cooldown: 3, duration: 2, description: '预知未来，为目标添加护盾（吸收100%攻击力伤害），持续2秒' }
-          }},
-        { id: 12, name: '尽玄', faction: '南一宗', realm: '引气·归元', hp: 395, atk: 33, def: 15, skill1: '一念永恒', skill2: '朝朝暮暮千年过', rarity: 'SSR',
-          skills: {
-            skill1: { name: '一念永恒', type: 'damage', power: 1.7, effect: 'eternal', cooldown: 3, description: '一念之间，造成170%伤害，若击杀目标则立即刷新所有技能冷却' },
-            skill2: { name: '朝朝暮暮千年过', type: 'buff', power: 0, effect: 'time_stop', cooldown: 6, duration: 2, description: '千年一瞬，时间停滞，2秒内敌方全体无法行动且受到的伤害增加50%' }
-          }},
-        { id: 13, name: '顾霆烨', faction: '炎雷派', realm: '引气·潺湲', hp: 330, atk: 27, def: 14, skill1: '雷火突进', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '雷火突进', type: 'damage', power: 1.3, effect: 'charge', cooldown: 2, description: '雷火突进，造成130%伤害并提升自身20%攻击力2秒' }
-          }},
-        { id: 14, name: '祁幽魂', faction: '魂煞派', realm: '引气·潺湲', hp: 330, atk: 27, def: 13, skill1: '魂波冲击', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '魂波冲击', type: 'aoe', power: 0.9, effect: 'silence', cooldown: 3, description: '魂波冲击，对所有敌人造成90%伤害并有20%概率沉默1秒（无法使用技能）' }
-          }},
-        { id: 15, name: '温弈秋', faction: '棋心派', realm: '引气·潺湲', hp: 330, atk: 27, def: 12, skill1: '棋盘移位', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '棋盘移位', type: 'control', power: 0.7, effect: 'reposition', cooldown: 2, description: '棋盘移位，与目标交换位置并造成70%伤害' }
-          }},
-        { id: 16, name: '沈寒铁', faction: '铁剑派', realm: '引气·潺湲', hp: 335, atk: 27, def: 16, skill1: '铁剑守御', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '铁剑守御', type: 'buff', power: 0, effect: 'def_up', cooldown: 2, duration: 2, description: '铁剑守御，提升自身50%防御力，持续2秒' }
-          }},
-        { id: 17, name: '晏毒痕', faction: '毒影派', realm: '引气·潺湲', hp: 335, atk: 27, def: 11, skill1: '毒血封愈', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '毒血封愈', type: 'damage', power: 1.0, effect: 'poison', cooldown: 2, description: '毒血封愈，造成100%伤害并附加中毒（每秒15%攻击伤害，持续3秒），且目标无法被治疗' }
-          }},
-        { id: 18, name: '符玄宸', faction: '阵符派', realm: '引气·潺湲', hp: 335, atk: 27, def: 12, skill1: '符阵护盾', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '符阵护盾', type: 'buff', power: 0, effect: 'team_shield', cooldown: 3, duration: 2, description: '符阵护盾，为全体队友添加护盾（吸收50%攻击力伤害），持续2秒' }
-          }},
-        { id: 19, name: '风无疾', faction: '风刃派', realm: '引气·潺湲', hp: 330, atk: 26, def: 13, skill1: '风场推送', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '风场推送', type: 'control', power: 0.8, effect: 'knockback', cooldown: 2, description: '风场推送，造成80%伤害并击退目标，使其下回合最后行动' }
-          }},
-        { id: 20, name: '石万钧', faction: '石拳派', realm: '引气·潺湲', hp: 330, atk: 26, def: 15, skill1: '重拳震退', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '重拳震退', type: 'damage', power: 1.2, effect: 'stun', cooldown: 3, description: '重拳震退，造成120%伤害并有30%概率眩晕1秒' }
-          }},
-        { id: 21, name: '朔长弓', faction: '飞箭派', realm: '引气·潺湲', hp: 330, atk: 26, def: 12, skill1: '箭风后撤', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '箭风后撤', type: 'damage', power: 1.1, effect: 'retreat', cooldown: 2, description: '箭风后撤，造成110%伤害并后撤（下回合受到的伤害降低30%）' }
-          }},
-        { id: 22, name: '冶千锋', faction: '铸器门', realm: '引气·潺湲', hp: 330, atk: 27, def: 14, skill1: '器波震退', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '器波震退', type: 'aoe', power: 1.0, effect: 'weapon_break', cooldown: 3, description: '器波震退，对所有敌人造成100%伤害并有20%概率降低其20%攻击力2秒' }
-          }},
-        { id: 23, name: '谷怀苓', faction: '百草门', realm: '引气·潺湲', hp: 335, atk: 27, def: 13, skill1: '百草丹息', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '百草丹息', type: 'heal', power: 1.2, effect: 'cleanse', cooldown: 2, description: '百草丹息，恢复目标120%攻击力的生命值，并清除所有负面状态' }
-          }},
-        { id: 24, name: '楚兽珩', faction: '御兽门', realm: '引气·潺湲', hp: 335, atk: 27, def: 14, skill1: '灵兽冲撞', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '灵兽冲撞', type: 'damage', power: 1.4, effect: 'bleed', cooldown: 2, description: '灵兽冲撞，造成140%伤害并附加流血（每秒20%攻击伤害，持续2秒）' }
-          }},
-        { id: 25, name: '观清玄', faction: '清心门', realm: '引气·潺湲', hp: 330, atk: 26, def: 12, skill1: '清心净化', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '清心净化', type: 'heal', power: 0.6, effect: 'cleanse_all', cooldown: 2, description: '清心净化，恢复全体队友60%攻击力的生命值，并清除所有负面状态' }
-          }},
-        { id: 26, name: '镇无妄', faction: '破阵门', realm: '引气·潺湲', hp: 330, atk: 26, def: 13, skill1: '封阻位移', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '封阻位移', type: 'control', power: 0.9, effect: 'root', cooldown: 2, description: '封阻位移，造成90%伤害并禁锢目标1秒（无法移动和闪避）' }
-          }},
-        { id: 27, name: '符清砚', faction: '符箓门', realm: '引气·潺湲', hp: 330, atk: 26, def: 12, skill1: '防御符罩', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '防御符罩', type: 'buff', power: 0, effect: 'def_up_all', cooldown: 3, duration: 2, description: '防御符罩，全体队友防御力提升30%，持续2秒' }
-          }},
-        { id: 28, name: '血无殇', faction: '血煞教', realm: '引气·潺湲', hp: 330, atk: 26, def: 13, skill1: '血浪冲击', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '血浪冲击', type: 'damage', power: 1.3, effect: 'life_cost', cooldown: 2, description: '血浪冲击，消耗自身10%生命值，造成130%伤害' }
-          }},
-        { id: 29, name: '蛊无心', faction: '毒心教', realm: '引气·潺湲', hp: 325, atk: 26, def: 11, skill1: '毒瘴推移', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '毒瘴推移', type: 'aoe', power: 0.8, effect: 'poison_field', cooldown: 3, description: '毒瘴推移，对所有敌人造成80%伤害并附加中毒（每秒10%攻击伤害，持续3秒）' }
-          }},
-        { id: 30, name: '月邪离', faction: '邪月教', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '邪月诅咒', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '邪月诅咒', type: 'damage', power: 1.0, effect: 'curse', cooldown: 2, description: '邪月诅咒，造成100%伤害并降低目标30%攻击力2秒' }
-          }},
-        { id: 31, name: '雾蛊幽', faction: '蛊氲教', realm: '引气·潺湲', hp: 325, atk: 26, def: 11, skill1: '毒雾迷乱', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '毒雾迷乱', type: 'control', power: 0.7, effect: 'confuse', cooldown: 3, description: '毒雾迷乱，造成70%伤害并有40%概率使目标混乱1秒（随机攻击友方或敌方）' }
-          }},
-        { id: 32, name: '靡清漪', faction: '魅音教', realm: '引气·潺湲', hp: 325, atk: 26, def: 10, skill1: '靡音乱行', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '靡音乱行', type: 'control', power: 0.6, effect: 'charm', cooldown: 3, description: '靡音乱行，造成60%伤害并有25%概率魅惑目标1秒（使其攻击友方）' }
-          }},
-        { id: 33, name: '宸月凛', faction: '影月帝国', realm: '引气·潺湲', hp: 330, atk: 26, def: 14, skill1: '月刃击退', skill2: '', rarity: 'SR',
-          skills: {
-            skill1: { name: '月刃击退', type: 'damage', power: 1.3, effect: 'moon_bleed', cooldown: 2, description: '月刃击退，造成130%伤害并附加月蚀（每秒15%攻击伤害，持续3秒，无视防御）' }
-          }},
-        { id: 34, name: '炀金朔', faction: '金焰国', realm: '引气·潺湲', hp: 325, atk: 26, def: 15, skill1: '金焰冲击', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '金焰冲击', type: 'damage', power: 1.2, effect: 'armor_break', cooldown: 2, description: '金焰冲击，造成120%伤害并降低目标20%防御力2秒' }
-          }},
-        { id: 35, name: '澜月汐', faction: '月湖国', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '月华疗愈', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '月华疗愈', type: 'heal', power: 0.9, effect: 'moon_heal', cooldown: 2, description: '月华疗愈，恢复目标90%攻击力的生命值，夜间效果翻倍' }
-          }},
-        { id: 36, name: '云宸泽', faction: '云泽国', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '云幕遮目', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '云幕遮目', type: 'control', power: 0.5, effect: 'blind', cooldown: 2, description: '云幕遮目，造成50%伤害并有50%概率致盲目标1秒（命中率降低50%）' }
-          }},
-        { id: 37, name: '苏媚音', faction: '合欢宗', realm: '引气·归元', hp: 378, atk: 30, def: 14, skill1: '魅影千重', skill2: '合欢·倾城之舞', rarity: 'SR',
-          skills: {
-            skill1: { name: '魅影千重', type: 'damage', power: 1.3, effect: 'multi_hit', cooldown: 2, description: '魅影千重，连续攻击2-4次，每次造成65%伤害' },
-            skill2: { name: '合欢·倾城之舞', type: 'buff', power: 0, effect: 'dance', cooldown: 4, duration: 3, description: '倾城之舞，全体队友攻击力提升30%，闪避率提升20%，持续3秒' }
-          }},
-        { id: 38, name: '江寒砚', faction: '寒雪宗', realm: '引气·归元', hp: 378, atk: 30, def: 15, skill1: '冰封千里', skill2: '寒雪·霜天冻地', rarity: 'SR',
-          skills: {
-            skill1: { name: '冰封千里', type: 'damage', power: 1.4, effect: 'freeze', cooldown: 3, description: '冰封千里，造成140%伤害并有35%概率冰冻目标1秒' },
-            skill2: { name: '寒雪·霜天冻地', type: 'aoe', power: 1.0, effect: 'freeze_all', cooldown: 5, description: '霜天冻地，对所有敌人造成100%伤害并有20%概率冰冻1秒' }
-          }},
-        { id: 39, name: '星清遥', faction: '星海宗', realm: '引气·归元', hp: 378, atk: 30, def: 14, skill1: '星河倒悬', skill2: '星海·星辰大海', rarity: 'SR',
-          skills: {
-            skill1: { name: '星河倒悬', type: 'damage', power: 1.5, effect: 'starfall', cooldown: 3, description: '星河倒悬，造成150%伤害，若目标生命值低于30%则伤害翻倍' },
-            skill2: { name: '星海·星辰大海', type: 'buff', power: 0, effect: 'star_shield', cooldown: 4, duration: 3, description: '星辰大海，全体队友获得星盾（吸收100%攻击力伤害），持续3秒' }
-          }},
-        { id: 40, name: '朱离火', faction: '火符派', realm: '引气·归元', hp: 378, atk: 30, def: 13, skill1: '离火焚天', skill2: '符火·三昧真火', rarity: 'SR',
-          skills: {
-            skill1: { name: '离火焚天', type: 'damage', power: 1.4, effect: 'burn_intense', cooldown: 3, description: '离火焚天，造成140%伤害并附加三昧真火（每秒20%攻击伤害，持续3秒，不可被清除）' },
-            skill2: { name: '符火·三昧真火', type: 'aoe', power: 1.2, effect: 'fire_storm', cooldown: 4, description: '三昧真火，对所有敌人造成120%伤害并附加三昧真火效果' }
-          }},
-        { id: 41, name: '苏清涟', faction: '水柔派', realm: '引气·归元', hp: 378, atk: 30, def: 12, skill1: '水龙吟', skill2: '柔水·沧海龙吟', rarity: 'SR',
-          skills: {
-            skill1: { name: '水龙吟', type: 'damage', power: 1.3, effect: 'water_heal', cooldown: 2, description: '水龙吟，造成130%伤害并恢复自身50%造成伤害的生命值' },
-            skill2: { name: '柔水·沧海龙吟', type: 'heal', power: 1.5, effect: 'water_bless', cooldown: 4, description: '沧海龙吟，恢复全体队友150%攻击力的生命值，并附加持续恢复（每秒30%，持续3秒）' }
-          }},
-        { id: 42, name: '萧金锋', faction: '金锐派', realm: '引气·归元', hp: 378, atk: 30, def: 16, skill1: '金刚伏魔', skill2: '金锐·万法不侵', rarity: 'SR',
-          skills: {
-            skill1: { name: '金刚伏魔', type: 'damage', power: 1.3, effect: 'armor_pierce', cooldown: 2, description: '金刚伏魔，造成130%伤害并无视目标50%防御' },
-            skill2: { name: '金锐·万法不侵', type: 'buff', power: 0, effect: 'invincible', cooldown: 5, duration: 2, description: '万法不侵，自身无敌2秒（免疫所有伤害和控制）' }
-          }},
-        { id: 43, name: '林青芽', faction: '木灵派', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '草木自愈', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '草木自愈', type: 'heal', power: 0.5, effect: 'self_regen', cooldown: 1, description: '草木自愈，恢复自身50%攻击力的生命值，并附加持续恢复（每秒10%，持续3秒）' }
-          }},
-        { id: 44, name: '沐星矢', faction: '星芒派', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '星光瞄准', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '星光瞄准', type: 'damage', power: 1.3, effect: 'crit_up', cooldown: 2, description: '星光瞄准，造成130%伤害并提升自身40%暴击率2秒' }
-          }},
-        { id: 45, name: '药承安', faction: '药王门', realm: '引气·归元', hp: 378, atk: 30, def: 13, skill1: '百草回春', skill2: '药王·起死回生', rarity: 'SR',
-          skills: {
-            skill1: { name: '百草回春', type: 'heal', power: 1.0, effect: 'revive_chance', cooldown: 3, description: '百草回春，恢复目标100%攻击力的生命值，若目标生命值低于20%则恢复量翻倍' },
-            skill2: { name: '药王·起死回生', type: 'heal', power: 2.0, effect: 'mass_revive', cooldown: 6, description: '起死回生，恢复全体队友200%攻击力的生命值，若有阵亡队友有30%概率复活并恢复50%生命值' }
-          }},
-        { id: 46, name: '匠焚天', faction: '炼器门', realm: '引气·拂晓', hp: 315, atk: 26, def: 14, skill1: '器甲加固', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '器甲加固', type: 'buff', power: 0, effect: 'def_up', cooldown: 2, duration: 2, description: '器甲加固，提升自身40%防御力，持续2秒' }
-          }},
-        { id: 47, name: '周天衍', faction: '阵天门', realm: '引气·拂晓', hp: 315, atk: 26, def: 13, skill1: '天门守御', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '天门守御', type: 'buff', power: 0, effect: 'team_def_up', cooldown: 3, duration: 2, description: '天门守御，全体队友防御力提升25%，持续2秒' }
-          }},
-        { id: 48, name: '雾归幽', faction: '雾隐门', realm: '引气·拂晓', hp: 315, atk: 26, def: 12, skill1: '迷雾潜行', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '迷雾潜行', type: 'buff', power: 0, effect: 'stealth', cooldown: 3, duration: 2, description: '迷雾潜行，进入隐身状态2秒（无法被选中，下次攻击伤害提升50%）' }
-          }},
-        { id: 49, name: '叶晚木', faction: '木门', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '木灵滋养', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '木灵滋养', type: 'heal', power: 0.4, effect: 'regen', cooldown: 1, description: '木灵滋养，恢复目标40%攻击力的生命值' }
-          }},
-        { id: 50, name: '泠水攸', faction: '水门', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '水幕防御', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '水幕防御', type: 'buff', power: 0, effect: 'shield', cooldown: 2, duration: 2, description: '水幕防御，为目标添加护盾（吸收50%攻击力伤害），持续2秒' }
-          }},
-        { id: 51, name: '燎烬', faction: '火门', realm: '引气·拂晓', hp: 315, atk: 26, def: 11, skill1: '火躯增伤', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '火躯增伤', type: 'buff', power: 0, effect: 'atk_up', cooldown: 2, duration: 2, description: '火躯增伤，提升自身30%攻击力，持续2秒' }
-          }},
-        { id: 52, name: '巧无迹', faction: '灵巧门', realm: '引气·拂晓', hp: 310, atk: 26, def: 10, skill1: '巧步位移', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '巧步位移', type: 'control', power: 0.5, effect: 'dodge', cooldown: 1, description: '巧步位移，造成50%伤害并提升自身40%闪避率1秒' }
-          }},
-        { id: 53, name: '风邪戾', faction: '黑风教', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '黑风推送', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '黑风推送', type: 'control', power: 0.7, effect: 'push', cooldown: 2, description: '黑风推送，造成70%伤害并击退目标' }
-          }},
-        { id: 54, name: '炎魔烬', faction: '烈火教', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '邪火冲击', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '邪火冲击', type: 'damage', power: 1.1, effect: 'burn', cooldown: 2, description: '邪火冲击，造成110%伤害并附加燃烧（每秒10%攻击伤害，持续2秒）' }
-          }},
-        { id: 55, name: '阴寒朔', faction: '阴风教', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '阴风拉扯', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '阴风拉扯', type: 'control', power: 0.8, effect: 'pull', cooldown: 2, description: '阴风拉扯，造成80%伤害并拉扯目标（使其下回合最先行动）' }
-          }},
-        { id: 56, name: '吞灵殇', faction: '噬灵教', realm: '引气·拂晓', hp: 310, atk: 26, def: 13, skill1: '噬灵震击', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '噬灵震击', type: 'damage', power: 1.2, effect: 'mana_burn', cooldown: 2, description: '噬灵震击，造成120%伤害并吸收目标10%当前生命值恢复自身' }
-          }},
-        { id: 57, name: '烬残阳', faction: '残阳教', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '残阳波推', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '残阳波推', type: 'aoe', power: 0.7, effect: 'weaken', cooldown: 3, description: '残阳波推，对所有敌人造成70%伤害并降低其10%攻击力2秒' }
-          }},
-        { id: 58, name: '暗千影', faction: '暗影教', realm: '引气·拂晓', hp: 310, atk: 25, def: 10, skill1: '暗影瞬移', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '暗影瞬移', type: 'damage', power: 1.2, effect: 'backstab', cooldown: 2, description: '暗影瞬移，瞬移至目标背后造成120%伤害，无视目标20%防御' }
-          }},
-        { id: 59, name: '魔赤阎', faction: '红魔教', realm: '引气·拂晓', hp: 310, atk: 25, def: 11, skill1: '魔浪强推', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '魔浪强推', type: 'damage', power: 1.3, effect: 'knockback', cooldown: 2, description: '魔浪强推，造成130%伤害并击退目标' }
-          }},
-        { id: 60, name: '狼苍野', faction: '苍狼邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 13, skill1: '狼啸震退', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '狼啸震退', type: 'damage', power: 1.1, effect: 'fear', cooldown: 2, description: '狼啸震退，造成110%伤害并有20%概率恐惧目标1秒（使其逃跑无法攻击）' }
-          }},
-        { id: 61, name: '月兔绒', faction: '玉兔邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '月灵自愈', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '月灵自愈', type: 'heal', power: 0.6, effect: 'self_heal', cooldown: 1, description: '月灵自愈，恢复自身60%攻击力的生命值' }
-          }},
-        { id: 62, name: '狐九影', faction: '灵狐邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '狐隐潜行', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '狐隐潜行', type: 'buff', power: 0, effect: 'stealth', cooldown: 2, duration: 1, description: '狐隐潜行，进入隐身状态1秒，下次攻击伤害提升40%' }
-          }},
-        { id: 63, name: '龟玄固', faction: '玄龟邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 16, skill1: '玄龟固甲', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '玄龟固甲', type: 'buff', power: 0, effect: 'def_up', cooldown: 1, duration: 2, description: '玄龟固甲，提升自身60%防御力，持续2秒' }
-          }},
-        { id: 64, name: '狮金曜', faction: '金狮邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 14, skill1: '狮爪猛推', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '狮爪猛推', type: 'damage', power: 1.2, effect: 'stun', cooldown: 2, description: '狮爪猛推，造成120%伤害并有25%概率眩晕1秒' }
-          }},
-        { id: 65, name: '虎烈峥', faction: '猛虎邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 13, skill1: '猛虎冲击', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '猛虎冲击', type: 'damage', power: 1.3, effect: 'bleed', cooldown: 2, description: '猛虎冲击，造成130%伤害并附加流血（每秒15%攻击伤害，持续2秒）' }
-          }},
-        { id: 66, name: '鹰凌风', faction: '雄鹰邦', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '鹰眼锁定', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '鹰眼锁定', type: 'damage', power: 1.2, effect: 'crit_mark', cooldown: 2, description: '鹰眼锁定，造成120%伤害并标记目标（下回合对其暴击率提升50%）' }
-          }},
-        { id: 67, name: '荒逐野', faction: '荒域散修盟', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '荒域推移', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '荒域推移', type: 'damage', power: 1.1, effect: 'wild_push', cooldown: 2, description: '荒域推移，造成110%伤害并推移目标（使其下回合行动顺序延后）' }
-          }},
-        { id: 68, name: '风岚彻', faction: '风岚国', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '风岚后撤', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '风岚后撤', type: 'damage', power: 1.0, effect: 'retreat_buff', cooldown: 2, description: '风岚后撤，造成100%伤害并后撤（下回合受到的伤害降低40%）' }
-          }},
-        { id: 69, name: '水云舒', faction: '水云国', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '云水疗伤', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '云水疗伤', type: 'heal', power: 0.8, effect: 'cloud_heal', cooldown: 2, description: '云水疗伤，恢复目标80%攻击力的生命值，并提升其20%防御力2秒' }
-          }},
-        { id: 70, name: '土厚承', faction: '土安国', realm: '引气·潺湲', hp: 325, atk: 26, def: 15, skill1: '土墙震退', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '土墙震退', type: 'damage', power: 1.1, effect: 'earth_wall', cooldown: 2, description: '土墙震退，造成110%伤害并召唤土墙（自身防御力提升30%）2秒' }
-          }},
-        { id: 71, name: '木苍峦', faction: '木林国', realm: '引气·潺湲', hp: 325, atk: 26, def: 14, skill1: '林木推挤', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '林木推挤', type: 'control', power: 0.9, effect: 'nature_push', cooldown: 2, description: '林木推挤，造成90%伤害并召唤林木缠绕目标1秒（无法行动）' }
-          }},
-        { id: 72, name: '霜落寒', faction: '雪霜国', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '霜阵禁锢', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '霜阵禁锢', type: 'control', power: 0.8, effect: 'ice_trap', cooldown: 2, description: '霜阵禁锢，造成80%伤害并有40%概率冰冻目标1秒' }
-          }},
-        { id: 73, name: '炎尘朔', faction: '炎尘国', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '尘火冲击', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '尘火冲击', type: 'damage', power: 1.2, effect: 'dust_burn', cooldown: 2, description: '尘火冲击，造成120%伤害并附加尘火（每秒10%攻击伤害，持续3秒，降低目标10%命中率）' }
-          }},
-        { id: 74, name: '幽宸影', faction: '幽影国', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '鬼影拉扯', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '鬼影拉扯', type: 'control', power: 0.8, effect: 'shadow_pull', cooldown: 2, description: '鬼影拉扯，造成80%伤害并拉扯目标（使其下回合最先受到攻击）' }
-          }},
-        { id: 75, name: '星遥客', faction: '星河散修盟', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '星域护盾', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '星域护盾', type: 'buff', power: 0, effect: 'star_shield', cooldown: 3, duration: 2, description: '星域护盾，为全体队友添加星盾（吸收80%攻击力伤害），持续2秒' }
-          }},
-        { id: 76, name: '澜长风', faction: '苍澜散修盟', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '掌风击退', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '掌风击退', type: 'damage', power: 1.1, effect: 'wind_knock', cooldown: 2, description: '掌风击退，造成110%伤害并击退目标（使其下回合无法行动）' }
-          }},
-        { id: 77, name: '渊夜行', faction: '玄渊散修盟', realm: '引气·潺湲', hp: 325, atk: 26, def: 12, skill1: '渊影潜行', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '渊影潜行', type: 'buff', power: 0, effect: 'deep_stealth', cooldown: 3, duration: 2, description: '渊影潜行，进入深度隐身2秒（无法被选中，下次攻击伤害提升60%且无视防御）' }
-          }},
-        { id: 78, name: '焚离殇', faction: '焚天散修盟', realm: '引气·潺湲', hp: 325, atk: 26, def: 13, skill1: '焚天强攻', skill2: '', rarity: 'R',
-          skills: {
-            skill1: { name: '焚天强攻', type: 'damage', power: 1.4, effect: 'sacrifice', cooldown: 2, description: '焚天强攻，消耗自身15%生命值，造成140%伤害' }
-          }},
-        { id: 79, name: '星夜', faction: '星夜散修盟', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '星芒冲击', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '星芒冲击', type: 'damage', power: 1.1, effect: 'star_hit', cooldown: 1, description: '星芒冲击，造成110%伤害' }
-          }},
-        { id: 80, name: '月影', faction: '月华散修盟', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '月华治愈', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '月华治愈', type: 'heal', power: 0.5, effect: 'moon_heal', cooldown: 1, description: '月华治愈，恢复目标50%攻击力的生命值' }
-          }},
-        { id: 81, name: '夜风', faction: '夜风散修盟', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '风刃推送', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '风刃推送', type: 'damage', power: 1.0, effect: 'wind_push', cooldown: 1, description: '风刃推送，造成100%伤害并推送目标' }
-          }},
-        { id: 82, name: '云海', faction: '云海散修盟', realm: '引气·拂晓', hp: 310, atk: 26, def: 12, skill1: '云雾隐匿', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '云雾隐匿', type: 'buff', power: 0, effect: 'cloud_hide', cooldown: 2, duration: 1, description: '云雾隐匿，进入隐身状态1秒（无法被选中）' }
-          }},
-        { id: 83, name: '炎烈', faction: '炎烈散修盟', realm: '引气·拂晓', hp: 310, atk: 26, def: 11, skill1: '烈焰冲击', skill2: '', rarity: 'N',
-          skills: {
-            skill1: { name: '烈焰冲击', type: 'damage', power: 1.1, effect: 'fire_hit', cooldown: 1, description: '烈焰冲击，造成110%伤害并附加燃烧（每秒8%攻击伤害，持续2秒）' }
-          }}
-    ];
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 2000);
 
-    // ========== 关卡数据 ==========
-    const LEVEL_DATA = [
-        { id: 1, name: '青锋弦-1', location: '万仞地', difficulty: 1, isBoss: false, enemies: [{ template: 'disciple', count: 1 }] },
-        { id: 2, name: '青锋弦-2', location: '万仞地', difficulty: 1, isBoss: false, enemies: [{ template: 'disciple', count: 2 }] },
-        { id: 3, name: '青锋弦-3', location: '万仞地', difficulty: 2, isBoss: false, enemies: [{ template: 'elite', count: 1 }] },
-        { id: 4, name: '青锋弦-4', location: '万仞地', difficulty: 2, isBoss: false, enemies: [{ template: 'elite', count: 2 }] },
-        { id: 5, name: '青锋弦-5', location: '万仞地', difficulty: 3, isBoss: false, enemies: [{ template: 'master', count: 1 }] },
-        { id: 6, name: '翠玉弦-1', location: '万仞地', difficulty: 3, isBoss: false, enemies: [{ template: 'disciple', count: 2 }, { template: 'healer', count: 1 }] },
-        { id: 7, name: '翠玉弦-2', location: '万仞地', difficulty: 3, isBoss: false, enemies: [{ template: 'elite', count: 1 }, { template: 'healer', count: 1 }] },
-        { id: 8, name: '翠玉弦-3', location: '万仞地', difficulty: 4, isBoss: false, enemies: [{ template: 'wolf', count: 2 }] },
-        { id: 9, name: '翠玉弦-4', location: '万仞地', difficulty: 4, isBoss: false, enemies: [{ template: 'wolf_elite', count: 1 }, { template: 'wolf', count: 1 }] },
-        { id: 10, name: '翠玉弦-5', location: '万仞地', difficulty: 5, isBoss: false, enemies: [{ template: 'master', count: 1 }, { template: 'healer', count: 1 }] },
-        { id: 11, name: '万仞地BOSS', location: '万仞地', difficulty: 8, isBoss: true, enemies: [{ template: 'boss', count: 1 }] },
+            if (clickCount >= 3) {
+                clickCount = 0;
+                clearTimeout(clickTimer);
 
-        { id: 12, name: '芳华弦-1', location: '洛川地', difficulty: 5, isBoss: false, enemies: [{ template: 'disciple', count: 2 }, { template: 'mage', count: 1 }] },
-        { id: 13, name: '芳华弦-2', location: '洛川地', difficulty: 5, isBoss: false, enemies: [{ template: 'elite', count: 2 }, { template: 'healer', count: 1 }] },
-        { id: 14, name: '芳华弦-3', location: '洛川地', difficulty: 6, isBoss: false, enemies: [{ template: 'wolf_elite', count: 2 }] },
-        { id: 15, name: '芳华弦-4', location: '洛川地', difficulty: 6, isBoss: false, enemies: [{ template: 'master', count: 1 }, { template: 'disciple', count: 2 }] },
-        { id: 16, name: '芳华弦-5', location: '洛川地', difficulty: 7, isBoss: false, enemies: [{ template: 'master', count: 2 }] },
-        { id: 17, name: '锦绣弦-1', location: '洛川地', difficulty: 7, isBoss: false, enemies: [{ template: 'assassin', count: 2 }] },
-        { id: 18, name: '锦绣弦-2', location: '洛川地', difficulty: 7, isBoss: false, enemies: [{ template: 'assassin', count: 1 }, { template: 'mage', count: 2 }] },
-        { id: 19, name: '锦绣弦-3', location: '洛川地', difficulty: 8, isBoss: false, enemies: [{ template: 'elite', count: 3 }] },
-        { id: 20, name: '锦绣弦-4', location: '洛川地', difficulty: 8, isBoss: false, enemies: [{ template: 'master', count: 1 }, { template: 'assassin', count: 2 }] },
-        { id: 21, name: '锦绣弦-5', location: '洛川地', difficulty: 9, isBoss: false, enemies: [{ template: 'boss_mini', count: 1 }, { template: 'healer', count: 1 }] },
-        { id: 22, name: '剑鸣弦-1', location: '洛川地', difficulty: 9, isBoss: false, enemies: [{ template: 'sword_master', count: 2 }] },
-        { id: 23, name: '剑鸣弦-2', location: '洛川地', difficulty: 9, isBoss: false, enemies: [{ template: 'sword_master', count: 1 }, { template: 'assassin', count: 2 }] },
-        { id: 24, name: '剑鸣弦-3', location: '洛川地', difficulty: 10, isBoss: false, enemies: [{ template: 'sword_elite', count: 2 }] },
-        { id: 25, name: '剑鸣弦-4', location: '洛川地', difficulty: 10, isBoss: false, enemies: [{ template: 'sword_elite', count: 1 }, { template: 'mage', count: 2 }] },
-        { id: 26, name: '剑鸣弦-5', location: '洛川地', difficulty: 11, isBoss: false, enemies: [{ template: 'master', count: 2 }, { template: 'healer', count: 1 }] },
-        { id: 27, name: '洛川地BOSS', location: '洛川地', difficulty: 13, isBoss: true, enemies: [{ template: 'boss', count: 1 }] },
+                const blackMagicSection = document.getElementById('blackMagicSection');
 
-        { id: 28, name: '青云弦-1', location: '云泽地', difficulty: 11, isBoss: false, enemies: [{ template: 'disciple', count: 3 }] },
-        { id: 29, name: '青云弦-2', location: '云泽地', difficulty: 11, isBoss: false, enemies: [{ template: 'elite', count: 2 }, { template: 'healer', count: 1 }] },
-        { id: 30, name: '青云弦-3', location: '云泽地', difficulty: 12, isBoss: false, enemies: [{ template: 'wolf_elite', count: 3 }] },
-        { id: 31, name: '青云弦-4', location: '云泽地', difficulty: 12, isBoss: false, enemies: [{ template: 'master', count: 2 }, { template: 'mage', count: 1 }] },
-        { id: 32, name: '青云弦-5', location: '云泽地', difficulty: 13, isBoss: false, enemies: [{ template: 'sword_elite', count: 2 }, { template: 'assassin', count: 1 }] },
-        { id: 33, name: '金狮弦-1', location: '云泽地', difficulty: 13, isBoss: false, enemies: [{ template: 'tank', count: 2 }, { template: 'mage', count: 1 }] },
-        { id: 34, name: '金狮弦-2', location: '云泽地', difficulty: 13, isBoss: false, enemies: [{ template: 'tank', count: 1 }, { template: 'master', count: 2 }] },
-        { id: 35, name: '金狮弦-3', location: '云泽地', difficulty: 14, isBoss: false, enemies: [{ template: 'boss_mini', count: 1 }, { template: 'disciple', count: 2 }] },
-        { id: 36, name: '金狮弦-4', location: '云泽地', difficulty: 14, isBoss: false, enemies: [{ template: 'sword_elite', count: 2 }, { template: 'healer', count: 1 }] },
-        { id: 37, name: '金狮弦-5', location: '云泽地', difficulty: 15, isBoss: false, enemies: [{ template: 'master', count: 3 }] },
-        { id: 38, name: '幽冥弦-1', location: '云泽地', difficulty: 15, isBoss: false, enemies: [{ template: 'assassin', count: 3 }] },
-        { id: 39, name: '幽冥弦-2', location: '云泽地', difficulty: 15, isBoss: false, enemies: [{ template: 'wolf_elite', count: 2 }, { template: 'mage', count: 2 }] },
-        { id: 40, name: '幽冥弦-3', location: '云泽地', difficulty: 16, isBoss: false, enemies: [{ template: 'boss_mini', count: 1 }, { template: 'assassin', count: 2 }] },
-        { id: 41, name: '幽冥弦-4', location: '云泽地', difficulty: 16, isBoss: false, enemies: [{ template: 'sword_elite', count: 3 }] },
-        { id: 42, name: '幽冥弦-5', location: '云泽地', difficulty: 17, isBoss: false, enemies: [{ template: 'master', count: 2 }, { template: 'tank', count: 1 }, { template: 'healer', count: 1 }] },
-        { id: 43, name: '金锐弦-1', location: '云泽地', difficulty: 17, isBoss: false, enemies: [{ template: 'tank', count: 2 }, { template: 'sword_elite', count: 1 }] },
-        { id: 44, name: '金锐弦-2', location: '云泽地', difficulty: 17, isBoss: false, enemies: [{ template: 'boss_mini', count: 1 }, { template: 'master', count: 2 }] },
-        { id: 45, name: '金锐弦-3', location: '云泽地', difficulty: 18, isBoss: false, enemies: [{ template: 'sword_elite', count: 2 }, { template: 'assassin', count: 2 }] },
-        { id: 46, name: '金锐弦-4', location: '云泽地', difficulty: 18, isBoss: false, enemies: [{ template: 'master', count: 3 }, { template: 'healer', count: 1 }] },
-        { id: 47, name: '金锐弦-5', location: '云泽地', difficulty: 19, isBoss: false, enemies: [{ template: 'boss_mini', count: 2 }, { template: 'tank', count: 1 }] },
-        { id: 48, name: '云泽地BOSS', location: '云泽地', difficulty: 21, isBoss: true, enemies: [{ template: 'boss', count: 1 }, { template: 'healer', count: 1 }] },
-
-        { id: 49, name: '苍澜洲BOSS', location: '苍澜洲', difficulty: 25, isBoss: true, enemies: [{ template: 'boss', count: 1 }, { template: 'master', count: 2 }, { template: 'healer', count: 1 }] }
-    ];
-
-    // 敌人模板
-    const ENEMY_TEMPLATES = {
-        disciple: { name: '弟子', faction: '敌方', realm: '引气·拂晓', hp: 280, atk: 22, def: 8, skill1: '基础剑法', rarity: 'N' },
-        elite: { name: '精英', faction: '敌方', realm: '引气·拂晓', hp: 300, atk: 25, def: 10, skill1: '进阶剑法', rarity: 'N' },
-        master: { name: '弦主', faction: '敌方', realm: '引气·潺湲', hp: 340, atk: 28, def: 12, skill1: '高级剑法', rarity: 'R' },
-        healer: { name: '医师', faction: '敌方', realm: '引气·拂晓', hp: 260, atk: 18, def: 8, skill1: '治疗术', rarity: 'N' },
-        mage: { name: '法师', faction: '敌方', realm: '引气·潺湲', hp: 290, atk: 30, def: 6, skill1: '火球术', rarity: 'R' },
-        assassin: { name: '刺客', faction: '敌方', realm: '引气·潺湲', hp: 270, atk: 32, def: 7, skill1: '背刺', rarity: 'R' },
-        wolf: { name: '苍狼', faction: '敌方', realm: '引气·拂晓', hp: 290, atk: 24, def: 9, skill1: '撕咬', rarity: 'N' },
-        wolf_elite: { name: '精英苍狼', faction: '敌方', realm: '引气·潺湲', hp: 320, atk: 28, def: 11, skill1: '猛扑', rarity: 'R' },
-        tank: { name: '盾卫', faction: '敌方', realm: '引气·潺湲', hp: 380, atk: 22, def: 18, skill1: '盾击', rarity: 'R' },
-        sword_master: { name: '剑师', faction: '敌方', realm: '引气·潺湲', hp: 330, atk: 29, def: 11, skill1: '剑气', rarity: 'R' },
-        sword_elite: { name: '大剑师', faction: '敌方', realm: '引气·归元', hp: 360, atk: 32, def: 13, skill1: '万剑', rarity: 'SR' },
-        boss_mini: { name: '小头目', faction: '敌方', realm: '引气·归元', hp: 400, atk: 35, def: 15, skill1: '狂暴', rarity: 'SR' },
-        boss: { name: 'BOSS', faction: '敌方', realm: '引气·归元', hp: 500, atk: 40, def: 20, skill1: '毁灭打击', rarity: 'SSR' }
-    };
-
-    // ========== 游戏状态管理 ==========
-    const GameState = {
-        data: {
-            gachaTickets: 3,
-            crystals: 0,
-            characters: [],
-            currentTeam: ['尽玄'],
-            currentLevel: 1,
-            completedLevels: [],
-            inventory: [],
-            settings: { sound: true, animation: true }
-        },
-
-        init() {
-            this.load();
-            if (this.data.characters.length === 0) {
-                this.addCharacter(12); // 尽玄
-            }
-            this.save();
-        },
-
-        addCharacter(charId) {
-            const char = ALL_CHARACTERS.find(c => c.id === charId);
-            if (!char) return false;
-            if (this.data.characters.find(c => c.id === charId)) return false;
-
-            const newChar = JSON.parse(JSON.stringify(char));
-            newChar.maxHp = newChar.hp;
-            newChar.level = 1;
-            newChar.exp = 0;
-            newChar.equipment = [];
-            this.data.characters.push(newChar);
-            this.save();
-            return true;
-        },
-
-        save() {
-            try {
-                localStorage.setItem(CONFIG.SAVE_KEY, JSON.stringify(this.data));
-            } catch (e) {
-                console.warn('Save failed:', e);
-            }
-        },
-
-        load() {
-            try {
-                const saved = localStorage.getItem(CONFIG.SAVE_KEY);
-                if (saved) {
-                    this.data = JSON.parse(saved);
-                }
-            } catch (e) {
-                console.warn('Load failed:', e);
-            }
-        },
-
-        reset() {
-            this.data = {
-                gachaTickets: 3,
-                crystals: 0,
-                characters: [],
-                currentTeam: ['尽玄'],
-                currentLevel: 1,
-                completedLevels: [],
-                inventory: [],
-                settings: { sound: true, animation: true }
-            };
-            this.addCharacter(12);
-            this.save();
-        }
-    };
-
-    // ========== UI工具 ==========
-    const UI = {
-        showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const screen = document.getElementById(screenId);
-            if (screen) {
-                screen.classList.add('active');
-                screen.scrollTop = 0;
-            }
-
-            if (screenId === 'levelChallenge') LevelSystem.render();
-            if (screenId === 'team') TeamSystem.render();
-            if (screenId === 'gacha') GachaSystem.render();
-            if (screenId === 'mainMenu') this.updateStatusBar();
-        },
-
-        updateStatusBar() {
-            document.getElementById('gachaTicketsDisplay').textContent = GameState.data.gachaTickets;
-            document.getElementById('charactersCountDisplay').textContent = GameState.data.characters.length;
-            document.getElementById('levelDisplay').textContent = GameState.data.currentLevel;
-            document.getElementById('crystalDisplay').textContent = GameState.data.crystals;
-
-            const power = TeamSystem.calculatePower();
-            const powerEl = document.getElementById('teamPowerDisplay');
-            if (powerEl) powerEl.textContent = `战力: ${power}`;
-        },
-
-        showToast(message, type = 'info', duration = 3000) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-
-            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${message}</span>`;
-
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), duration + 400);
-        },
-
-        showModal(title, message, icon, actions) {
-            const overlay = document.getElementById('modalOverlay');
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').textContent = message;
-            document.getElementById('modalIcon').textContent = icon;
-
-            const actionsContainer = document.getElementById('modalActions');
-            actionsContainer.innerHTML = '';
-
-            if (actions) {
-                actions.forEach(action => {
-                    const btn = document.createElement('button');
-                    btn.className = `btn ${action.class || ''}`;
-                    btn.textContent = action.text;
-                    btn.onclick = () => {
-                        overlay.classList.remove('active');
-                        if (action.callback) action.callback();
-                    };
-                    actionsContainer.appendChild(btn);
-                });
-            } else {
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.textContent = '确定';
-                btn.onclick = () => overlay.classList.remove('active');
-                actionsContainer.appendChild(btn);
-            }
-
-            overlay.classList.add('active');
-        },
-
-        createDanmaku(text, color = '#ffd700') {
-            const container = document.getElementById('danmakuContainer');
-            const danmaku = document.createElement('div');
-            danmaku.className = 'danmaku';
-            danmaku.textContent = text;
-            danmaku.style.color = color;
-            danmaku.style.top = Math.random() * 80 + 10 + '%';
-            danmaku.style.fontSize = (Math.random() * 10 + 16) + 'px';
-            danmaku.style.animationDuration = (Math.random() * 2 + 3) + 's';
-
-            container.appendChild(danmaku);
-            setTimeout(() => danmaku.remove(), 5000);
-        },
-
-        showDamagePopup(element, damage, type = 'damage') {
-            if (!element) return;
-            const rect = element.getBoundingClientRect();
-            const popup = document.createElement('div');
-            popup.className = 'damage-popup';
-            popup.textContent = type === 'heal' ? `+${damage}` : `-${damage}`;
-            popup.style.color = type === 'heal' ? '#4dff9f' : (type === 'crit' ? '#ff4444' : '#ff6b6b');
-            popup.style.left = rect.left + rect.width / 2 + 'px';
-            popup.style.top = rect.top + 'px';
-            popup.style.fontSize = type === 'crit' ? '36px' : '28px';
-
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 1200);
-        },
-
-        showSkillEffect(element, color = '#ffd700') {
-            if (!element) return;
-            const rect = element.getBoundingClientRect();
-            const effect = document.createElement('div');
-            effect.className = 'skill-effect';
-            effect.style.width = '100px';
-            effect.style.height = '100px';
-            effect.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-            effect.style.left = rect.left + rect.width / 2 - 50 + 'px';
-            effect.style.top = rect.top + rect.height / 2 - 50 + 'px';
-
-            document.body.appendChild(effect);
-            setTimeout(() => effect.remove(), 800);
-        }
-    };
-
-    // ========== 队伍系统 ==========
-    const TeamSystem = {
-        render() {
-            const currentTeamEl = document.getElementById('currentTeam');
-            const availableEl = document.getElementById('availableCharacters');
-
-            // 渲染当前队伍
-            let teamHtml = '';
-            GameState.data.currentTeam.forEach((charName, index) => {
-                const char = GameState.data.characters.find(c => c.name === charName);
-                if (!char) return;
-
-                const isMain = charName === '尽玄';
-                const power = this.calculateCharPower(char);
-
-                teamHtml += `
-                    <div class="team-member ${isMain ? 'fixed' : ''}">
-                        <div class="member-avatar">${char.name[0]}</div>
-                        <div class="member-info">
-                            <div class="member-name">${char.name} ${isMain ? '<span style="color:var(--gold)">[主角]</span>' : ''}</div>
-                            <div class="member-detail">
-                                <span class="badge badge-${char.rarity}">${char.rarity}</span>
-                                ${char.realm} | 战力: ${power}
-                            </div>
-                        </div>
-                        <div class="member-actions">
-                            ${!isMain ? `<button class="btn-remove" onclick="TeamSystem.remove(${index})">移除</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-
-            currentTeamEl.innerHTML = teamHtml;
-            document.getElementById('teamCount').textContent = GameState.data.currentTeam.length;
-            document.getElementById('teamTotalPower').textContent = this.calculatePower();
-
-            // 计算属性加成
-            const bonus = this.calculateBonus();
-            document.getElementById('teamBonus').textContent = bonus || '无';
-
-            // 渲染可用角色
-            let availableHtml = '';
-            const availableChars = GameState.data.characters.filter(c => !GameState.data.currentTeam.includes(c.name));
-            document.getElementById('availableCount').textContent = availableChars.length;
-
-            availableChars.forEach(char => {
-                const power = this.calculateCharPower(char);
-                availableHtml += `
-                    <div class="char-list-item rarity-${char.rarity}" onclick="TeamSystem.add('${char.name}')">
-                        <div class="char-rarity-indicator"></div>
-                        <div class="char-list-info">
-                            <div class="char-list-name">${char.name}</div>
-                            <div class="char-list-meta">
-                                <span class="badge badge-${char.rarity}">${char.rarity}</span>
-                                ${char.faction} | ${char.realm}
-                            </div>
-                            <div class="char-list-stats">战力: ${power} | HP:${char.hp} ATK:${char.atk} DEF:${char.def}</div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            availableEl.innerHTML = availableHtml || '<p style="color:var(--text-muted); text-align:center; padding:20px;">暂无可添加角色</p>';
-        },
-
-        add(charName) {
-            if (GameState.data.currentTeam.length >= CONFIG.MAX_TEAM_SIZE) {
-                UI.showToast('队伍已满（最多6人）', 'warning');
-                return;
-            }
-            if (GameState.data.currentTeam.includes(charName)) {
-                UI.showToast('该角色已在队伍中', 'warning');
-                return;
-            }
-
-            GameState.data.currentTeam.push(charName);
-            GameState.save();
-            this.render();
-            UI.showToast(`${charName} 加入队伍`, 'success');
-            UI.updateStatusBar();
-        },
-
-        remove(index) {
-            const charName = GameState.data.currentTeam[index];
-            if (charName === '尽玄') {
-                UI.showToast('尽玄是主角，无法移除', 'warning');
-                return;
-            }
-
-            GameState.data.currentTeam.splice(index, 1);
-            GameState.save();
-            this.render();
-            UI.showToast(`${charName} 已移除`, 'info');
-            UI.updateStatusBar();
-        },
-
-        calculateCharPower(char) {
-            return Math.floor(char.hp * 0.5 + char.atk * 2 + char.def * 1.5);
-        },
-
-        calculatePower() {
-            let total = 0;
-            GameState.data.currentTeam.forEach(name => {
-                const char = GameState.data.characters.find(c => c.name === name);
-                if (char) total += this.calculateCharPower(char);
-            });
-            return total;
-        },
-
-        calculateBonus() {
-            const factions = {};
-            GameState.data.currentTeam.forEach(name => {
-                const char = GameState.data.characters.find(c => c.name === name);
-                if (char) factions[char.faction] = (factions[char.faction] || 0) + 1;
-            });
-
-            const bonuses = [];
-            for (const [faction, count] of Object.entries(factions)) {
-                if (count >= 3) bonuses.push(`${faction} 羁绊: 攻击力+15%`);
-                else if (count >= 2) bonuses.push(`${faction} 羁绊: 防御力+10%`);
-            }
-
-            return bonuses.join(' | ') || null;
-        }
-    };
-
-    // ========== 抽卡系统 ==========
-    const GachaSystem = {
-        isDrawing: false,
-
-        render() {
-            document.getElementById('singleDrawCost').textContent = '1';
-            document.getElementById('multiDrawCost').textContent = '10';
-        },
-
-        draw(count) {
-            if (this.isDrawing) return;
-            if (GameState.data.gachaTickets < count) {
-                UI.showToast('招募券不足！', 'error');
-                return;
-            }
-
-            this.isDrawing = true;
-            GameState.data.gachaTickets -= count;
-
-            const results = [];
-            let hasGuarantee = false;
-
-            for (let i = 0; i < count; i++) {
-                let rarity;
-
-                // 十连保底
-                if (count === 10 && i === count - 1 && !hasGuarantee) {
-                    rarity = Math.random() < 0.02 ? 'SSR' : 'SR';
+                if (!blackMagicVisible) {
+                    blackMagicSection.style.display = 'block';
+                    blackMagicVisible = true;
+                    setTimeout(() => {
+                        blackMagicSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
                 } else {
-                    const rand = Math.random() * 100;
-                    if (rand < CONFIG.GACHA_RATES.SSR) rarity = 'SSR';
-                    else if (rand < CONFIG.GACHA_RATES.SSR + CONFIG.GACHA_RATES.SR) rarity = 'SR';
-                    else if (rand < CONFIG.GACHA_RATES.SSR + CONFIG.GACHA_RATES.SR + CONFIG.GACHA_RATES.R) rarity = 'R';
-                    else rarity = 'N';
-                }
-
-                if (rarity === 'SR' || rarity === 'SSR') hasGuarantee = true;
-
-                // UP角色概率提升
-                let pool = ALL_CHARACTERS.filter(c => c.rarity === rarity);
-                if (rarity === 'SSR' && Math.random() < CONFIG.UP_CHARACTER.rateBonus) {
-                    pool = ALL_CHARACTERS.filter(c => c.id === CONFIG.UP_CHARACTER.id);
-                }
-
-                const char = pool[Math.floor(Math.random() * pool.length)];
-                const isNew = !GameState.data.characters.find(c => c.id === char.id);
-
-                if (isNew) {
-                    GameState.addCharacter(char.id);
-                }
-
-                results.push({ ...char, isNew });
-            }
-
-            GameState.save();
-            this.showResults(results, count);
-            UI.updateStatusBar();
-
-            setTimeout(() => { this.isDrawing = false; }, 1000);
-        },
-
-        showResults(results, count) {
-            const container = document.getElementById('gachaResult');
-            let html = '<div class="gacha-result-container">';
-
-            results.forEach((char, index) => {
-                const rarityColor = char.rarity === 'SSR' ? 'var(--red)' : 
-                                   char.rarity === 'SR' ? 'var(--purple)' : 
-                                   char.rarity === 'R' ? 'var(--blue)' : '#888';
-                const rarityBg = char.rarity === 'SSR' ? 'rgba(255,107,107,0.1)' : 
-                                char.rarity === 'SR' ? 'rgba(196,77,255,0.1)' : 
-                                char.rarity === 'R' ? 'rgba(77,159,255,0.1)' : 'rgba(100,100,100,0.1)';
-
-                const isUP = char.id === CONFIG.UP_CHARACTER.id;
-
-                html += `
-                    <div class="gacha-result-card rarity-${char.rarity} ${char.isNew ? 'new-char' : ''}" 
-                         style="border: 2px solid ${rarityColor}; background: ${rarityBg}; animation-delay: ${index * 0.15}s;">
-                        <div style="font-size: 48px; margin-bottom: 10px;">${char.isNew ? '✨' : '🎴'}</div>
-                        <h4 style="color: ${rarityColor}; font-size: 24px; margin: 10px 0;">${char.name}</h4>
-                        <p style="color: #aaa; font-size: 14px;">${char.faction} | ${char.realm}</p>
-                        <p style="color: ${rarityColor}; font-size: 18px; font-weight: bold; margin: 10px 0;">${char.rarity}</p>
-                        ${isUP ? '<p style="color: var(--red); font-size: 14px; margin-top: 5px;">🔥 UP角色</p>' : ''}
-                        ${char.isNew ? '<p style="color: var(--gold); font-size: 14px; margin-top: 5px;">🆕 新角色！</p>' : '<p style="color: #666; font-size: 14px; margin-top: 5px;">已拥有</p>'}
-                        <div style="margin-top: 15px; font-size: 13px; color: var(--text-muted);">
-                            HP: ${char.hp} | ATK: ${char.atk} | DEF: ${char.def}
-                        </div>
-                    </div>
-                `;
-
-                // 弹幕效果
-                setTimeout(() => {
-                    const color = char.rarity === 'SSR' ? '#ff6b6b' : 
-                                 char.rarity === 'SR' ? '#c44dff' : 
-                                 char.rarity === 'R' ? '#4d9fff' : '#888';
-                    UI.createDanmaku(`${char.isNew ? '✨获得' : '获得'} ${char.rarity} ${char.name}${isUP ? ' [UP]' : ''}`, color);
-                }, index * 200);
-            });
-
-            html += '</div>';
-            container.innerHTML = html;
-
-            // 统计
-            const ssrCount = results.filter(r => r.rarity === 'SSR').length;
-            if (ssrCount > 0) {
-                UI.showToast(`恭喜！获得 ${ssrCount} 个 SSR！`, 'success', 5000);
-            }
-        }
-    };
-
-    // ========== 关卡系统 ==========
-    const LevelSystem = {
-        render() {
-            const container = document.getElementById('levelList');
-            let html = '';
-
-            const locations = [...new Set(LEVEL_DATA.map(l => l.location))];
-
-            locations.forEach(location => {
-                const levels = LEVEL_DATA.filter(l => l.location === location);
-                if (levels.length === 0) return;
-
-                html += `<div class="location-section">`;
-                html += `<h2>${location}</h2>`;
-                html += `<div class="level-grid">`;
-
-                levels.forEach(level => {
-                    const isUnlocked = level.id <= GameState.data.currentLevel;
-                    const isCompleted = GameState.data.completedLevels.includes(level.id);
-                    const isBoss = level.isBoss;
-
-                    let borderColor = isBoss ? 'var(--red)' : (isCompleted ? '#4dff9f' : 'var(--border-color)');
-                    let cardClass = '';
-                    if (isBoss) cardClass = 'boss-level';
-                    if (isCompleted) cardClass += ' completed';
-                    if (!isUnlocked) cardClass += ' locked';
-
-                    const rewards = this.getRewards(level);
-
-                    html += `
-                        <div class="level-card ${cardClass}" style="border-color: ${borderColor};">
-                            <div class="level-num">第 ${level.id} 关</div>
-                            <div class="level-name" style="color: ${isBoss ? 'var(--red)' : '#fff'};">
-                                ${isBoss ? '👑 ' : ''}${level.name}
-                            </div>
-                            <div class="level-location">${location}</div>
-                            <div class="difficulty-stars">${'★'.repeat(level.difficulty)}${'☆'.repeat(10 - level.difficulty)}</div>
-                            <div class="level-rewards">
-                                <span>🎴 ${rewards.tickets}</span>
-                                <span>💎 ${rewards.crystals}</span>
-                            </div>
-                            ${isUnlocked ? 
-                                `<button class="btn ${isBoss ? 'btn-red' : 'btn-blue'}" onclick="BattleSystem.start(${level.id})" style="margin-top: 15px; width: 100%; font-size: 14px; padding: 10px;">
-                                    ${isCompleted ? '再次挑战' : '挑战'}
-                                </button>` : 
-                                `<p style="color: #666; margin-top: 15px; text-align: center; font-size: 14px;">🔒 未解锁</p>`
-                            }
-                        </div>
-                    `;
-                });
-
-                html += `</div></div>`;
-            });
-
-            container.innerHTML = html;
-        },
-
-        getRewards(level) {
-            return {
-                tickets: level.isBoss ? 3 : 1,
-                crystals: level.difficulty * 10
-            };
-        }
-    };
-
-    // ========== BUFF系统 ==========
-    const BuffSystem = {
-        activeBuffs: [],
-
-        apply(target, buffType, value, duration, source = '') {
-            const buff = {
-                id: Date.now() + Math.random(),
-                target: target,
-                type: buffType,
-                value: value,
-                duration: duration,
-                maxDuration: duration,
-                source: source
-            };
-
-            this.activeBuffs.push(buff);
-            this.renderBuff(target);
-
-            // 每秒tick
-            const interval = setInterval(() => {
-                buff.duration -= 1;
-                if (buff.duration <= 0) {
-                    this.remove(buff.id);
-                    clearInterval(interval);
-                } else {
-                    this.renderBuff(target);
-                }
-            }, 1000);
-
-            buff.interval = interval;
-            return buff;
-        },
-
-        remove(buffId) {
-            const index = this.activeBuffs.findIndex(b => b.id === buffId);
-            if (index === -1) return;
-
-            const buff = this.activeBuffs[index];
-            if (buff.interval) clearInterval(buff.interval);
-            this.activeBuffs.splice(index, 1);
-
-            if (buff.target) this.renderBuff(buff.target);
-        },
-
-        removeAllFromTarget(target) {
-            this.activeBuffs.filter(b => b.target === target).forEach(b => {
-                if (b.interval) clearInterval(b.interval);
-            });
-            this.activeBuffs = this.activeBuffs.filter(b => b.target !== target);
-            this.renderBuff(target);
-        },
-
-        getBuffs(target) {
-            return this.activeBuffs.filter(b => b.target === target);
-        },
-
-        hasBuff(target, type) {
-            return this.activeBuffs.some(b => b.target === target && b.type === type);
-        },
-
-        getBuffValue(target, type) {
-            const buffs = this.activeBuffs.filter(b => b.target === target && b.type === type);
-            return buffs.reduce((sum, b) => sum + b.value, 0);
-        },
-
-        renderBuff(target) {
-            const buffBar = document.getElementById(`buff-${target}`);
-            if (!buffBar) return;
-
-            const buffs = this.getBuffs(target);
-            let html = '';
-
-            buffs.forEach(buff => {
-                let className = 'buff-neutral';
-                let icon = '⚡';
-
-                if (['atk_up', 'def_up', 'speed_up', 'crit_up', 'dodge_up', 'shield', 'stealth', 'invincible'].includes(buff.type)) {
-                    className = 'buff-positive';
-                    icon = '✨';
-                } else if (['poison', 'burn', 'bleed', 'stun', 'freeze', 'silence', 'blind', 'curse', 'weaken'].includes(buff.type)) {
-                    className = 'buff-negative';
-                    icon = '☠️';
-                }
-
-                html += `
-                    <div class="buff-icon ${className}" title="${buff.source}: ${buff.type} (${buff.value})">
-                        ${icon} ${buff.duration}s
-                    </div>
-                `;
-            });
-
-            buffBar.innerHTML = html;
-        },
-
-        clearAll() {
-            this.activeBuffs.forEach(b => {
-                if (b.interval) clearInterval(b.interval);
-            });
-            this.activeBuffs = [];
-        }
-    };
-
-    // ========== 战斗系统 ==========
-    const BattleSystem = {
-        battle: null,
-        isProcessing: false,
-        turnCount: 0,
-
-        start(levelId) {
-            const level = LEVEL_DATA.find(l => l.id === levelId);
-            if (!level) return;
-
-            // 检查队伍人数
-            if (level.difficulty >= 5 && GameState.data.currentTeam.length < 2) {
-                UI.showModal('队伍人数不足', `第${level.id}关需要至少2人组队！
-当前队伍: ${GameState.data.currentTeam.length}人`, '⚠️', [
-                    { text: '去组队', callback: () => UI.showScreen('team'), class: 'btn-blue' },
-                    { text: '取消', callback: () => {}, class: 'btn-secondary' }
-                ]);
-                return;
-            }
-
-            // 生成敌人
-            const enemyTeam = this.generateEnemies(level);
-
-            // 初始化战斗
-            this.battle = {
-                levelId: levelId,
-                level: level,
-                playerTeam: this.initTeam(GameState.data.currentTeam, 'player'),
-                enemyTeam: this.initTeam(enemyTeam, 'enemy'),
-                currentTurn: 0,
-                isPlayerTurn: true,
-                selectedSkill: null,
-                selectedChar: null,
-                turnOrder: [],
-                log: []
-            };
-
-            this.turnCount = 0;
-            this.isProcessing = false;
-            BuffSystem.clearAll();
-
-            UI.showScreen('battleScreen');
-            this.renderBattleField();
-            this.addLog('战斗开始！', 'info');
-            this.addLog(`挑战: ${level.name} (${level.location})`, 'info');
-            this.addLog(`敌方: ${this.battle.enemyTeam.map(e => e.name).join(', ')}`, 'enemy');
-
-            this.startTurn();
-        },
-
-        generateEnemies(level) {
-            const enemies = [];
-            level.enemies.forEach(group => {
-                for (let i = 0; i < group.count; i++) {
-                    const template = ENEMY_TEMPLATES[group.template];
-                    if (!template) continue;
-
-                    const enemy = JSON.parse(JSON.stringify(template));
-                    enemy.maxHp = enemy.hp;
-                    enemy.id = `enemy_${Date.now()}_${i}`;
-                    enemy.name = `${template.name}${i > 0 ? i + 1 : ''}`;
-
-                    // 根据难度调整属性
-                    const diffMult = 1 + (level.difficulty - 1) * 0.08;
-                    enemy.hp = Math.floor(enemy.hp * diffMult);
-                    enemy.maxHp = enemy.hp;
-                    enemy.atk = Math.floor(enemy.atk * diffMult);
-                    enemy.def = Math.floor(enemy.def * diffMult);
-
-                    enemies.push(enemy);
-                }
-            });
-            return enemies;
-        },
-
-        initTeam(charNamesOrData, team) {
-            if (team === 'player') {
-                return charNamesOrData.map(name => {
-                    const char = GameState.data.characters.find(c => c.name === name);
-                    if (!char) return null;
-                    const instance = JSON.parse(JSON.stringify(char));
-                    instance.maxHp = instance.hp;
-                    instance.currentCooldowns = { skill1: 0, skill2: 0 };
-                    instance.buffs = [];
-                    instance.team = 'player';
-                    return instance;
-                }).filter(c => c);
-            } else {
-                return charNamesOrData.map(e => {
-                    const instance = JSON.parse(JSON.stringify(e));
-                    instance.currentCooldowns = { skill1: 0, skill2: 0 };
-                    instance.buffs = [];
-                    instance.team = 'enemy';
-                    return instance;
-                });
-            }
-        },
-
-        renderBattleField() {
-            if (!this.battle) return;
-
-            // 渲染玩家队伍
-            const playerContainer = document.getElementById('playerTeamDisplay');
-            let playerHtml = '';
-            let playerPower = 0;
-
-            this.battle.playerTeam.forEach((char, index) => {
-                if (!char) return;
-                const isDead = char.hp <= 0;
-                const isActive = this.battle.isPlayerTurn && !isDead && this.battle.selectedChar === index;
-                const hpPercent = Math.max(0, (char.hp / char.maxHp) * 100);
-                playerPower += TeamSystem.calculateCharPower(char);
-
-                const skill1Data = char.skills?.skill1;
-                const skill2Data = char.skills?.skill2;
-
-                playerHtml += `
-                    <div class="character-card ${isActive ? 'active' : ''} ${isDead ? 'dead' : ''}" 
-                         id="player-char-${index}" data-index="${index}">
-                        <div class="char-header">
-                            <div>
-                                <div class="char-name-display">${char.name}</div>
-                                <div class="char-realm">
-                                    <span class="badge badge-${char.rarity}">${char.rarity}</span>
-                                    ${char.faction} | ${char.realm}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar-label">
-                                <span>HP</span>
-                                <span>${char.hp}/${char.maxHp}</span>
-                            </div>
-                            <div class="hp-bar">
-                                <div class="hp-fill" id="player-hp-${index}" style="width: ${hpPercent}%;"></div>
-                                <div class="hp-text">${Math.floor(hpPercent)}%</div>
-                            </div>
-                        </div>
-                        <div class="buff-bar" id="buff-player-${index}"></div>
-                        ${!isDead && this.battle.isPlayerTurn ? `
-                            <div class="skill-buttons">
-                                <button class="skill-btn ${this.battle.selectedChar === index && this.battle.selectedSkill === 1 ? 'selected' : ''}" 
-                                        onclick="BattleSystem.selectSkill(${index}, 1)" 
-                                        ${char.currentCooldowns.skill1 > 0 ? 'disabled' : ''}>
-                                    ${skill1Data ? skill1Data.name : char.skill1}
-                                    ${char.currentCooldowns.skill1 > 0 ? `<span class="cooldown">${char.currentCooldowns.skill1}T</span>` : ''}
-                                </button>
-                                <button class="skill-btn ${this.battle.selectedChar === index && this.battle.selectedSkill === 2 ? 'selected' : ''}" 
-                                        onclick="BattleSystem.selectSkill(${index}, 2)" 
-                                        ${!skill2Data || char.currentCooldowns.skill2 > 0 ? 'disabled' : ''}>
-                                    ${skill2Data ? skill2Data.name : char.skill2 || '无'}
-                                    ${char.currentCooldowns.skill2 > 0 ? `<span class="cooldown">${char.currentCooldowns.skill2}T</span>` : ''}
-                                </button>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-
-            playerContainer.innerHTML = playerHtml;
-            document.getElementById('playerPower').textContent = playerPower;
-
-            // 渲染敌人队伍
-            const enemyContainer = document.getElementById('enemyTeamDisplay');
-            let enemyHtml = '';
-            let enemyPower = 0;
-
-            this.battle.enemyTeam.forEach((char, index) => {
-                if (!char) return;
-                const isDead = char.hp <= 0;
-                const isTargeted = this.battle.selectedChar !== null && !isDead;
-                const hpPercent = Math.max(0, (char.hp / char.maxHp) * 100);
-                enemyPower += char.hp * 0.5 + char.atk * 2 + char.def * 1.5;
-
-                enemyHtml += `
-                    <div class="character-card ${isDead ? 'dead' : ''} ${isTargeted ? 'targeted' : ''}" 
-                         id="enemy-char-${index}" 
-                         onclick="BattleSystem.selectTarget('enemy', ${index})"
-                         data-index="${index}">
-                        <div class="char-header">
-                            <div>
-                                <div class="char-name-display">${char.name}</div>
-                                <div class="char-realm">
-                                    <span class="badge badge-${char.rarity}">${char.rarity}</span>
-                                    ${char.faction} | ${char.realm}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar-label">
-                                <span>HP</span>
-                                <span>${char.hp}/${char.maxHp}</span>
-                            </div>
-                            <div class="hp-bar">
-                                <div class="hp-fill" id="enemy-hp-${index}" style="width: ${hpPercent}%;"></div>
-                                <div class="hp-text">${Math.floor(hpPercent)}%</div>
-                            </div>
-                        </div>
-                        <div class="buff-bar" id="buff-enemy-${index}"></div>
-                    </div>
-                `;
-            });
-
-            enemyContainer.innerHTML = enemyHtml;
-            document.getElementById('enemyPower').textContent = Math.floor(enemyPower);
-
-            // 更新回合指示器
-            const turnIndicator = document.getElementById('turnIndicator');
-            if (this.battle.isPlayerTurn) {
-                turnIndicator.className = 'turn-indicator turn-player';
-                turnIndicator.textContent = '我方回合 - 请选择角色和技能';
-                turnIndicator.style.display = 'block';
-            } else {
-                turnIndicator.className = 'turn-indicator turn-enemy';
-                turnIndicator.textContent = '敌方回合 - 思考中...';
-                turnIndicator.style.display = 'block';
-            }
-
-            // 更新BUFF显示
-            this.battle.playerTeam.forEach((char, i) => {
-                if (char) BuffSystem.renderBuff(`player-${i}`);
-            });
-            this.battle.enemyTeam.forEach((char, i) => {
-                if (char) BuffSystem.renderBuff(`enemy-${i}`);
-            });
-        },
-
-        selectSkill(charIndex, skillNum) {
-            if (!this.battle || !this.battle.isPlayerTurn || this.isProcessing) return;
-
-            const char = this.battle.playerTeam[charIndex];
-            if (!char || char.hp <= 0) return;
-            if (char.currentCooldowns[`skill${skillNum}`] > 0) return;
-
-            this.battle.selectedChar = charIndex;
-            this.battle.selectedSkill = skillNum;
-
-            const skillData = skillNum === 1 ? char.skills?.skill1 : char.skills?.skill2;
-            if (skillData) {
-                this.addLog(`${char.name} 准备使用 [${skillData.name}] - ${skillData.description}`, 'player');
-            }
-
-            this.renderBattleField();
-            this.addLog('请选择目标（点击敌方角色）', 'info');
-        },
-
-        selectTarget(team, index) {
-            if (!this.battle || !this.battle.isPlayerTurn || this.isProcessing) return;
-            if (this.battle.selectedChar === null || this.battle.selectedSkill === null) {
-                UI.showToast('请先选择技能', 'warning');
-                return;
-            }
-
-            const target = team === 'enemy' ? this.battle.enemyTeam[index] : this.battle.playerTeam[index];
-            if (!target || target.hp <= 0) {
-                UI.showToast('目标已阵亡', 'warning');
-                return;
-            }
-
-            this.executePlayerSkill(this.battle.selectedChar, this.battle.selectedSkill, team, index);
-        },
-
-        executePlayerSkill(charIndex, skillNum, targetTeam, targetIndex) {
-            if (this.isProcessing) return;
-            this.isProcessing = true;
-
-            const attacker = this.battle.playerTeam[charIndex];
-            const target = targetTeam === 'enemy' ? this.battle.enemyTeam[targetIndex] : this.battle.playerTeam[targetIndex];
-            const skillData = skillNum === 1 ? attacker.skills?.skill1 : attacker.skills?.skill2;
-
-            if (!skillData) {
-                this.isProcessing = false;
-                return;
-            }
-
-            // 设置冷却
-            attacker.currentCooldowns[`skill${skillNum}`] = skillData.cooldown;
-
-            // 执行技能效果
-            this.processSkillEffect(attacker, target, skillData, 'player', targetTeam, targetIndex);
-
-            // 清除选择
-            this.battle.selectedChar = null;
-            this.battle.selectedSkill = null;
-
-            // 检查战斗结束
-            if (this.checkBattleEnd()) return;
-
-            // 切换到敌方回合
-            setTimeout(() => {
-                this.battle.isPlayerTurn = false;
-                this.renderBattleField();
-                this.startEnemyTurn();
-            }, 1500);
-        },
-
-        processSkillEffect(attacker, target, skillData, attackerTeam, targetTeam, targetIndex) {
-            const attackerEl = document.getElementById(`${attackerTeam}-char-${attacker.team === 'player' ? this.battle.playerTeam.indexOf(attacker) : this.battle.enemyTeam.indexOf(attacker)}`);
-            const targetEl = document.getElementById(`${targetTeam}-char-${targetIndex}`);
-
-            // 攻击动画
-            if (attackerEl) attackerEl.classList.add('attack-animation');
-            setTimeout(() => { if (attackerEl) attackerEl.classList.remove('attack-animation'); }, 600);
-
-            // 技能特效
-            const effectColors = {
-                damage: '#ff6b6b', heal: '#4dff9f', buff: '#ffd700', 
-                control: '#c44dff', aoe: '#ff8c00'
-            };
-            UI.showSkillEffect(targetEl, effectColors[skillData.type] || '#ffd700');
-
-            // 处理效果
-            switch (skillData.type) {
-                case 'damage':
-                    this.dealDamage(attacker, target, skillData, targetEl);
-                    break;
-                case 'aoe':
-                    this.dealAoEDamage(attacker, skillData, targetTeam);
-                    break;
-                case 'heal':
-                    this.healTarget(attacker, target, skillData, targetEl);
-                    break;
-                case 'buff':
-                    this.applyBuff(attacker, target, skillData, targetEl);
-                    break;
-                case 'control':
-                    this.applyControl(attacker, target, skillData, targetEl);
-                    break;
-            }
-
-            // 特殊效果处理
-            this.processSpecialEffect(attacker, target, skillData);
-
-            // 弹幕效果
-            const danmakuText = `${attacker.name} 释放了 ${skillData.name}！`;
-            UI.createDanmaku(danmakuText, effectColors[skillData.type] || '#ffd700');
-        },
-
-        dealDamage(attacker, target, skillData, targetEl) {
-            let damage = Math.floor(attacker.atk * skillData.power);
-
-            // 防御计算
-            let defense = target.def;
-            if (skillData.effect === 'pierce' || skillData.effect === 'armor_pierce') {
-                defense *= (skillData.effect === 'pierce' ? 0.7 : 0.5);
-            }
-
-            damage = Math.max(1, damage - defense);
-
-            // 暴击判定
-            let isCrit = false;
-            const critChance = BuffSystem.getBuffValue(`${target.team}-${target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target)}`, 'crit_up') * 0.01;
-            if (Math.random() < (0.05 + critChance)) {
-                damage = Math.floor(damage * 1.5);
-                isCrit = true;
-            }
-
-            // 闪避判定
-            const dodgeChance = BuffSystem.getBuffValue(`${target.team}-${target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target)}`, 'dodge_up') * 0.01;
-            if (Math.random() < (0.05 + dodgeChance)) {
-                this.addLog(`${target.name} 闪避了攻击！`, 'info');
-                return;
-            }
-
-            // 无敌判定
-            if (BuffSystem.hasBuff(`${target.team}-${target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target)}`, 'invincible')) {
-                this.addLog(`${target.name} 处于无敌状态，免疫伤害！`, 'info');
-                return;
-            }
-
-            target.hp = Math.max(0, target.hp - damage);
-
-            // 伤害动画和弹窗
-            if (targetEl) {
-                targetEl.classList.add('damage-animation');
-                setTimeout(() => targetEl.classList.remove('damage-animation'), 500);
-                UI.showDamagePopup(targetEl, damage, isCrit ? 'crit' : 'damage');
-            }
-
-            // 屏幕震动（暴击或高伤害）
-            if (isCrit || damage > attacker.atk * 2) {
-                document.body.classList.add('screen-shake');
-                setTimeout(() => document.body.classList.remove('screen-shake'), 500);
-            }
-
-            this.addLog(`${attacker.name} 使用 ${skillData.name}，对 ${target.name} 造成 <span class="log-damage">${damage}</span> 点伤害${isCrit ? ' (暴击!)' : ''}！`, 'player');
-
-            // 击杀判定
-            if (target.hp <= 0) {
-                this.addLog(`${target.name} 被击败了！`, 'info');
-                if (targetEl) targetEl.classList.add('dead');
-
-                // 尽玄特殊效果：击杀刷新冷却
-                if (attacker.name === '尽玄' && skillData.effect === 'eternal') {
-                    attacker.currentCooldowns.skill1 = 0;
-                    attacker.currentCooldowns.skill2 = 0;
-                    this.addLog(`${attacker.name} 的 [一念永恒] 触发，技能冷却已刷新！`, 'player');
+                    blackMagicSection.style.display = 'none';
+                    blackMagicVisible = false;
                 }
             }
-
-            this.updateHpBar(target, targetTeam);
-        },
-
-        dealAoEDamage(attacker, skillData, targetTeam) {
-            const targets = targetTeam === 'enemy' ? this.battle.enemyTeam : this.battle.playerTeam;
-            let totalDamage = 0;
-
-            targets.forEach((target, index) => {
-                if (target.hp <= 0) return;
-
-                let damage = Math.floor(attacker.atk * skillData.power);
-                damage = Math.max(1, damage - target.def);
-                target.hp = Math.max(0, target.hp - damage);
-                totalDamage += damage;
-
-                const targetEl = document.getElementById(`${targetTeam}-char-${index}`);
-                if (targetEl) {
-                    targetEl.classList.add('damage-animation');
-                    setTimeout(() => targetEl.classList.remove('damage-animation'), 500);
-                    UI.showDamagePopup(targetEl, damage, 'damage');
-                }
-
-                this.updateHpBar(target, targetTeam);
-            });
-
-            this.addLog(`${attacker.name} 使用 ${skillData.name}，对全体敌人造成 <span class="log-damage">${totalDamage}</span> 点范围伤害！`, 'player');
-        },
-
-        healTarget(healer, target, skillData, targetEl) {
-            const healAmount = Math.floor(healer.atk * skillData.power);
-            const oldHp = target.hp;
-            target.hp = Math.min(target.maxHp, target.hp + healAmount);
-            const actualHeal = target.hp - oldHp;
-
-            if (targetEl) {
-                targetEl.classList.add('heal-animation');
-                setTimeout(() => targetEl.classList.remove('heal-animation'), 800);
-                UI.showDamagePopup(targetEl, actualHeal, 'heal');
-            }
-
-            this.addLog(`${healer.name} 使用 ${skillData.name}，为 ${target.name} 恢复 <span class="log-heal">${actualHeal}</span> 点生命值！`, 'player');
-            this.updateHpBar(target, target.team);
-        },
-
-        applyBuff(caster, target, skillData, targetEl) {
-            const targetIndex = target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target);
-            const targetId = `${target.team}-${targetIndex}`;
-
-            BuffSystem.apply(targetId, skillData.effect, skillData.power || 0, skillData.duration || 3, skillData.name);
-
-            this.addLog(`${caster.name} 使用 ${skillData.name}，${target.name} 获得 <span class="log-buff">${skillData.effect}</span> 效果 (${skillData.duration}秒)！`, 'player');
-        },
-
-        applyControl(caster, target, skillData, targetEl) {
-            this.dealDamage(caster, target, { ...skillData, power: skillData.power || 0.8 }, targetEl);
-
-            // 控制效果
-            const controlEffects = {
-                stun: '眩晕', freeze: '冰冻', silence: '沉默', 
-                blind: '致盲', fear: '恐惧', charm: '魅惑'
-            };
-
-            if (controlEffects[skillData.effect]) {
-                const targetIndex = target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target);
-                BuffSystem.apply(`${target.team}-${targetIndex}`, skillData.effect, 0, 1, skillData.name);
-                this.addLog(`${target.name} 被 <span class="log-buff">${controlEffects[skillData.effect]}</span> 了！`, 'info');
-            }
-        },
-
-        processSpecialEffect(attacker, target, skillData) {
-            // 持续伤害效果
-            const dotEffects = {
-                burn: { name: '燃烧', damage: 0.1 },
-                poison: { name: '中毒', damage: 0.15 },
-                bleed: { name: '流血', damage: 0.2 },
-                moon_bleed: { name: '月蚀', damage: 0.15 }
-            };
-
-            if (dotEffects[skillData.effect]) {
-                const targetIndex = target.team === 'player' ? this.battle.playerTeam.indexOf(target) : this.battle.enemyTeam.indexOf(target);
-                const dot = dotEffects[skillData.effect];
-                BuffSystem.apply(`${target.team}-${targetIndex}`, skillData.effect, Math.floor(attacker.atk * dot.damage), 3, dot.name);
-                this.addLog(`${target.name} 被附加了 <span class="log-buff">${dot.name}</span> 效果！`, 'info');
-            }
-
-            // 生命吸取
-            if (skillData.effect === 'life_drain') {
-                const healAmount = Math.floor(attacker.atk * skillData.power * 0.3);
-                attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                this.addLog(`${attacker.name} 吸取了 ${healAmount} 点生命值！`, 'player');
-                this.updateHpBar(attacker, 'player');
-            }
-        },
-
-        updateHpBar(char, team) {
-            const index = team === 'player' ? this.battle.playerTeam.indexOf(char) : this.battle.enemyTeam.indexOf(char);
-            if (index === -1) return;
-
-            const hpBar = document.getElementById(`${team}-hp-${index}`);
-            if (hpBar) {
-                const percent = Math.max(0, (char.hp / char.maxHp) * 100);
-                hpBar.style.width = percent + '%';
-            }
-        },
-
-        startEnemyTurn() {
-            if (!this.battle || this.battle.isPlayerTurn) return;
-
-            this.addLog('敌方回合开始', 'enemy');
-
-            const aliveEnemies = this.battle.enemyTeam.filter(e => e.hp > 0);
-            const alivePlayers = this.battle.playerTeam.filter(p => p.hp > 0);
-
-            if (aliveEnemies.length === 0 || alivePlayers.length === 0) {
-                this.checkBattleEnd();
-                return;
-            }
-
-            let enemyIndex = 0;
-
-            const processNextEnemy = () => {
-                if (enemyIndex >= aliveEnemies.length) {
-                    // 敌方回合结束
-                    this.endEnemyTurn();
-                    return;
-                }
-
-                const enemy = aliveEnemies[enemyIndex];
-                const enemyIdx = this.battle.enemyTeam.indexOf(enemy);
-
-                // 检查控制效果
-                const enemyId = `enemy-${enemyIdx}`;
-                if (BuffSystem.hasBuff(enemyId, 'stun') || BuffSystem.hasBuff(enemyId, 'freeze')) {
-                    this.addLog(`${enemy.name} 处于控制状态，无法行动！`, 'info');
-                    enemyIndex++;
-                    setTimeout(processNextEnemy, 1000);
-                    return;
-                }
-
-                // 选择目标（优先攻击血量最低的玩家）
-                alivePlayers.sort((a, b) => a.hp - b.hp);
-                const target = alivePlayers[0];
-                const targetIdx = this.battle.playerTeam.indexOf(target);
-
-                // 简单AI：随机使用技能
-                const skillNum = Math.random() < 0.3 && enemy.skills?.skill2 && enemy.currentCooldowns.skill2 === 0 ? 2 : 1;
-
-                if (enemy.currentCooldowns[`skill${skillNum}`] > 0) {
-                    // 使用普通攻击
-                    this.executeEnemyAttack(enemy, enemyIdx, target, targetIdx);
-                } else {
-                    const skillData = skillNum === 1 ? enemy.skills?.skill1 : enemy.skills?.skill2;
-                    if (skillData) {
-                        enemy.currentCooldowns[`skill${skillNum}`] = skillData.cooldown || 2;
-                        this.processSkillEffect(enemy, target, skillData, 'enemy', 'player', targetIdx);
-                    } else {
-                        this.executeEnemyAttack(enemy, enemyIdx, target, targetIdx);
-                    }
-                }
-
-                enemyIndex++;
-
-                if (this.checkBattleEnd()) return;
-                setTimeout(processNextEnemy, 1500);
-            };
-
-            setTimeout(processNextEnemy, 1000);
-        },
-
-        executeEnemyAttack(enemy, enemyIdx, target, targetIdx) {
-            let damage = Math.max(1, enemy.atk - target.def + Math.floor(Math.random() * 10));
-
-            // 闪避判定
-            const dodgeChance = BuffSystem.getBuffValue(`player-${targetIdx}`, 'dodge_up') * 0.01;
-            if (Math.random() < (0.05 + dodgeChance)) {
-                this.addLog(`${target.name} 闪避了 ${enemy.name} 的攻击！`, 'info');
-                return;
-            }
-
-            target.hp = Math.max(0, target.hp - damage);
-
-            const targetEl = document.getElementById(`player-char-${targetIdx}`);
-            if (targetEl) {
-                targetEl.classList.add('damage-animation');
-                setTimeout(() => targetEl.classList.remove('damage-animation'), 500);
-                UI.showDamagePopup(targetEl, damage, 'damage');
-            }
-
-            this.addLog(`${enemy.name} 攻击 ${target.name}，造成 <span class="log-damage">${damage}</span> 点伤害！`, 'enemy');
-
-            if (target.hp <= 0) {
-                this.addLog(`${target.name} 被击败了！`, 'info');
-                if (targetEl) targetEl.classList.add('dead');
-            }
-
-            this.updateHpBar(target, 'player');
-        },
-
-        endEnemyTurn() {
-            if (!this.battle) return;
-
-            // 减少冷却
-            this.battle.playerTeam.forEach(char => {
-                if (char.hp > 0) {
-                    if (char.currentCooldowns.skill1 > 0) char.currentCooldowns.skill1--;
-                    if (char.currentCooldowns.skill2 > 0) char.currentCooldowns.skill2--;
-                }
-            });
-
-            this.battle.enemyTeam.forEach(char => {
-                if (char.hp > 0) {
-                    if (char.currentCooldowns.skill1 > 0) char.currentCooldowns.skill1--;
-                    if (char.currentCooldowns.skill2 > 0) char.currentCooldowns.skill2--;
-                }
-            });
-
-            this.battle.isPlayerTurn = true;
-            this.battle.currentTurn++;
-            this.turnCount++;
-            this.isProcessing = false;
-
-            this.addLog(`第 ${this.battle.currentTurn} 回合开始`, 'info');
-            this.renderBattleField();
-            this.startTurn();
-        },
-
-        startTurn() {
-            // 检查持续伤害
-            this.processDoT('player');
-            this.processDoT('enemy');
-
-            if (this.checkBattleEnd()) return;
-        },
-
-        processDoT(team) {
-            const teamArray = team === 'player' ? this.battle.playerTeam : this.battle.enemyTeam;
-
-            teamArray.forEach((char, index) => {
-                if (char.hp <= 0) return;
-
-                const charId = `${team}-${index}`;
-                const dots = BuffSystem.getBuffs(charId).filter(b => 
-                    ['burn', 'poison', 'bleed', 'moon_bleed'].includes(b.type)
-                );
-
-                dots.forEach(dot => {
-                    const damage = dot.value;
-                    char.hp = Math.max(0, char.hp - damage);
-
-                    const charEl = document.getElementById(`${team}-char-${index}`);
-                    if (charEl) {
-                        UI.showDamagePopup(charEl, damage, 'damage');
-                    }
-
-                    const dotNames = { burn: '燃烧', poison: '中毒', bleed: '流血', moon_bleed: '月蚀' };
-                    this.addLog(`${char.name} 受到 <span class="log-damage">${damage}</span> 点${dotNames[dot.type] || dot.type}伤害！`, team === 'player' ? 'player' : 'enemy');
-
-                    this.updateHpBar(char, team);
-                });
-            });
-        },
-
-        checkBattleEnd() {
-            if (!this.battle) return true;
-
-            const allPlayersDead = this.battle.playerTeam.every(p => p.hp <= 0);
-            const allEnemiesDead = this.battle.enemyTeam.every(e => e.hp <= 0);
-
-            if (allPlayersDead) {
-                setTimeout(() => this.endBattle(false), 1000);
-                return true;
-            }
-
-            if (allEnemiesDead) {
-                setTimeout(() => this.endBattle(true), 1000);
-                return true;
-            }
-
-            return false;
-        },
-
-        endBattle(isWin) {
-            if (!this.battle) return;
-
-            const level = this.battle.level;
-
-            if (isWin) {
-                const rewards = LevelSystem.getRewards(level);
-                GameState.data.gachaTickets += rewards.tickets;
-                GameState.data.crystals += rewards.crystals;
-
-                if (!GameState.data.completedLevels.includes(level.id)) {
-                    GameState.data.completedLevels.push(level.id);
-                }
-
-                GameState.data.currentLevel = Math.max(GameState.data.currentLevel, level.id + 1);
-                GameState.save();
-
-                UI.showModal(
-                    '战斗胜利！',
-                    `恭喜通过 ${level.name}！
-
-获得奖励:
-🎴 招募券 x${rewards.tickets}
-💎 灵石 x${rewards.crystals}`,
-                    '🎉',
-                    [
-                        { text: '继续挑战', callback: () => { UI.showScreen('levelChallenge'); }, class: 'btn-blue' },
-                        { text: '返回菜单', callback: () => { UI.showScreen('mainMenu'); }, class: 'btn-secondary' }
-                    ]
-                );
-
-                // 胜利弹幕
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => UI.createDanmaku('胜利！', '#ffd700'), i * 300);
-                }
-            } else {
-                UI.showModal(
-                    '战斗失败',
-                    '我方队伍全军覆没...
-
-提升战力后再来挑战吧！',
-                    '💔',
-                    [
-                        { text: '重新挑战', callback: () => { this.start(this.battle.levelId); }, class: 'btn-red' },
-                        { text: '返回菜单', callback: () => { UI.showScreen('mainMenu'); }, class: 'btn-secondary' }
-                    ]
-                );
-            }
-
-            this.battle = null;
-            this.isProcessing = false;
-            BuffSystem.clearAll();
-        },
-
-        retreat() {
-            if (!this.battle) return;
-
-            UI.showModal(
-                '确认撤退？',
-                '撤退将视为战斗失败，确定要撤退吗？',
-                '⚠️',
-                [
-                    { text: '确认撤退', callback: () => { this.endBattle(false); }, class: 'btn-red' },
-                    { text: '继续战斗', callback: () => {}, class: 'btn-blue' }
-                ]
-            );
-        },
-
-        addLog(message, type) {
-            const logDiv = document.getElementById('battleLog');
-            const entry = document.createElement('div');
-            entry.className = `log-entry log-${type}`;
-            entry.innerHTML = message;
-            logDiv.appendChild(entry);
-            logDiv.scrollTop = logDiv.scrollHeight;
-
-            // 限制日志数量
-            while (logDiv.children.length > 100) {
-                logDiv.removeChild(logDiv.firstChild);
-            }
-        }
-    };
-
-    // ========== 游戏主入口 ==========
-    const Game = {
-        init() {
-            // 隐藏加载画面
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 500);
-
-            // 初始化游戏状态
-            GameState.init();
-
-            // 更新显示
-            UI.updateStatusBar();
-
-            // 绑定键盘事件
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    const modal = document.getElementById('modalOverlay');
-                    if (modal.classList.contains('active')) {
-                        modal.classList.remove('active');
-                    }
-                }
-            });
-
-            console.log('南一宗 v2.0 已加载');
-        },
-
-        start() {
-            document.getElementById('startScreen').classList.remove('active');
-            document.getElementById('mainMenu').classList.add('active');
-            UI.updateStatusBar();
-
-            // 欢迎弹幕
-            UI.createDanmaku('欢迎来到南一宗！', '#ffd700');
-            setTimeout(() => UI.createDanmaku('万道归宗 · 极致自由', '#4d9fff'), 500);
-        },
-
-        showScreen(screenId) {
-            UI.showScreen(screenId);
-        }
-    };
-
-    // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        Game.init();
-    });
+        });
     </script>
+
 </body>
 </html>
