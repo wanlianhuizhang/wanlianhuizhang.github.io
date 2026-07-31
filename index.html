@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>尽氏同行 · 服务页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0b0a;
+            color: #e8e0d8;
+            font-family: 'Georgia', 'Songti SC', serif;
+            line-height: 1.7;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 860px;
+            width: 100%;
+            background: #171311;
+            padding: 50px 40px;
+            border-radius: 18px;
+            box-shadow: 0 0 80px rgba(180, 80, 30, 0.06);
+            border: 1px solid #2f2824;
+            position: relative;
+        }
+
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #5a4036, transparent);
+            margin: 36px 0;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #f0e4da;
+            margin-bottom: 6px;
+        }
+
+        .header .sub {
+            font-size: 14px;
+            color: #8a7a70;
+            letter-spacing: 2px;
+        }
+
+        .header .sub span {
+            color: #b87a5a;
+            margin: 0 6px;
+        }
+
+        .section {
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #dccfc6;
+            border-left: 3px solid #b87a5a;
+            padding-left: 14px;
+            margin-bottom: 14px;
+        }
+
+        .section p {
+            font-size: 15px;
+            color: #cdc0b6;
+            margin-bottom: 12px;
+            text-indent: 2em;
+        }
+
+        .section p.no-indent {
+            text-indent: 0;
+        }
+
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            background: #1f1a17;
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin: 18px 0 6px;
+            border: 1px solid #2f2824;
+        }
+
+        .contact-grid .item {
+            font-size: 14px;
+            color: #dccfc6;
+        }
+
+        .contact-grid .item strong {
+            color: #b87a5a;
+            font-weight: 400;
+            margin-right: 4px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 14px 0 6px;
+        }
+
+        .price-table th {
+            text-align: left;
+            padding: 8px 6px 8px 0;
+            color: #8a7a70;
+            font-weight: 400;
+            border-bottom: 1px solid #2f2824;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .price-table td {
+            padding: 8px 6px 8px 0;
+            border-bottom: 1px solid #1f1a17;
+            color: #cdc0b6;
+        }
+
+        .price-table .name {
+            color: #e8e0d8;
+        }
+
+        .price-table .price {
+            text-align: right;
+            color: #dccfc6;
+            white-space: nowrap;
+        }
+
+        .price-table .highlight {
+            color: #c49a7a;
+        }
+
+        .price-table .tag {
+            font-size: 11px;
+            color: #6a5a50;
+            margin-left: 8px;
+        }
+
+        .member-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0 8px;
+        }
+
+        @media (max-width: 600px) {
+            .member-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .member-card {
+            background: #1f1a17;
+            padding: 18px 20px;
+            border-radius: 10px;
+            border: 1px solid #2f2824;
+        }
+
+        .member-card h4 {
+            font-size: 16px;
+            font-weight: 400;
+            color: #dccfc6;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .member-card .discount {
+            font-size: 22px;
+            color: #b87a5a;
+        }
+
+        .member-card .price-row {
+            font-size: 14px;
+            color: #cdc0b6;
+            margin: 6px 0 4px;
+        }
+
+        .member-card .price-row span {
+            color: #8a7a70;
+            font-size: 13px;
+        }
+
+        .member-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 4px;
+        }
+
+        .member-card ul li {
+            font-size: 13px;
+            color: #b0a298;
+            padding: 3px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .member-card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #b87a5a;
+        }
+
+        .sanfa-wrapper {
+            background: radial-gradient(ellipse at 30% 20%, rgba(80, 40, 20, 0.25), transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(40, 20, 10, 0.15), transparent 60%),
+                #1a1512;
+            border-radius: 16px;
+            padding: 28px 24px 24px;
+            border: 1px solid #3f322a;
+            margin: 14px 0 6px;
+            position: relative;
+            box-shadow: inset 0 0 60px rgba(60, 30, 15, 0.1);
+        }
+
+        .sanfa-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #7a5a4a, transparent);
+        }
+
+        .sanfa-wrapper .sanfa-label {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: #5a4a40;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .sanfa-wrapper .sanfa-label span {
+            color: #7a5a4a;
+        }
+
+        .sanfa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 700px) {
+            .sanfa-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .sanfa-card {
+            background: rgba(20, 16, 14, 0.6);
+            border-radius: 12px;
+            padding: 22px 20px 20px;
+            text-align: center;
+            border: 1px solid #2f2824;
+            position: relative;
+            backdrop-filter: blur(4px);
+        }
+
+        .sanfa-card .sanfa-level {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #5a4a40;
+            margin-bottom: 4px;
+        }
+
+        .sanfa-card .sanfa-name {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin: 2px 0 4px;
+        }
+
+        .sanfa-card .sanfa-price {
+            font-size: 28px;
+            font-weight: 300;
+            margin: 6px 0 4px;
+        }
+
+        .sanfa-card .sanfa-sub {
+            font-size: 12px;
+            color: #6a5a50;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .sanfa-card .sanfa-desc {
+            font-size: 13px;
+            color: #b0a298;
+            line-height: 1.7;
+            margin: 8px 0 4px;
+        }
+
+        .sanfa-card .sanfa-tag {
+            display: inline-block;
+            font-size: 11px;
+            color: #5a4a40;
+            border: 1px solid #2f2824;
+            padding: 2px 14px;
+            border-radius: 20px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .sanfa-card.tian {
+            border-color: #7a5a3a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(160, 120, 80, 0.08), transparent 60%);
+        }
+        .sanfa-card.tian .sanfa-name {
+            color: #d4b08a;
+        }
+        .sanfa-card.tian .sanfa-price {
+            color: #d4b08a;
+        }
+        .sanfa-card.tian::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #b08a6a, transparent);
+        }
+
+        .sanfa-card.di {
+            border-color: #4a5a4a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(60, 90, 70, 0.08), transparent 60%);
+        }
+        .sanfa-card.di .sanfa-name {
+            color: #8ab08a;
+        }
+        .sanfa-card.di .sanfa-price {
+            color: #8ab08a;
+        }
+        .sanfa-card.di::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #6a8a6a, transparent);
+        }
+
+        .sanfa-card.ren {
+            border-color: #5a4a5a;
+            background: radial-gradient(ellipse at 50% 30%, rgba(100, 70, 120, 0.08), transparent 60%);
+        }
+        .sanfa-card.ren .sanfa-name {
+            color: #b08ab0;
+        }
+        .sanfa-card.ren .sanfa-price {
+            color: #b08ab0;
+        }
+        .sanfa-card.ren::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #8a6a8a, transparent);
+        }
+
+        .sanfa-rule {
+            font-size: 12px;
+            color: #6a5a50;
+            border-top: 1px solid #2a2220;
+            padding: 10px 0 4px 0;
+            margin-top: 12px;
+            line-height: 1.8;
+        }
+
+        .sanfa-rule .highlight {
+            color: #b87a5a;
+        }
+
+        .sanfa-rule .strong {
+            color: #dccfc6;
+        }
+
+        .sanfa-note {
+            text-align: center;
+            font-size: 13px;
+            color: #5a4a40;
+            margin-top: 18px;
+            letter-spacing: 1px;
+            border-top: 1px solid #2f2824;
+            padding-top: 16px;
+        }
+
+        .sanfa-note strong {
+            color: #7a5a4a;
+            font-weight: 400;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 13px;
+            color: #5a4a40;
+            margin-top: 30px;
+            letter-spacing: 1px;
+            border-top: 1px solid #2f2824;
+            padding-top: 24px;
+        }
+
+        .footer-note .clickable {
+            display: inline-block;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            user-select: none;
+            letter-spacing: 4px;
+            color: #6a5a50;
+        }
+
+        .footer-note .clickable:hover {
+            background: rgba(180, 80, 30, 0.06);
+            color: #8a7a70;
+        }
+
+        #blackMagicSection {
+            display: none;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #3f322a;
+        }
+
+        #blackMagicSection.visible {
+            display: block;
+        }
+
+        .black-magic-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .black-magic-header h2 {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #d4c4b8;
+        }
+
+        .black-magic-header .sub {
+            font-size: 13px;
+            color: #6a5a50;
+            letter-spacing: 3px;
+        }
+
+        .warning-box {
+            background: #1a1412;
+            border: 1px solid #3a2a24;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 14px 0;
+            border-left: 3px solid #7a3a2a;
+        }
+
+        .warning-box strong {
+            color: #b07a6a;
+        }
+
+        .warning-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0;
+        }
+
+        .warning-box ul li {
+            font-size: 14px;
+            color: #b0a098;
+            padding: 4px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .warning-box ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #5a3a32;
+        }
+
+        .black-magic-section .section-title {
+            border-left-color: #7a3a2a;
+        }
+
+        .course-note {
+            background: #1a1512;
+            border: 1px solid #2f2824;
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 14px 0;
+            font-size: 14px;
+            color: #b0a298;
+            line-height: 1.8;
+        }
+
+        .course-note strong {
+            color: #b87a5a;
+            font-weight: 400;
+        }
+
+        .surcharge-note {
+            font-size: 12px;
+            color: #6a5a50;
+            border-top: 1px solid #2a2220;
+            border-bottom: 1px solid #2a2220;
+            padding: 8px 0;
+            margin: 10px 0 16px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 24px;
+            letter-spacing: 0.3px;
+        }
+
+        .surcharge-note span {
+            color: #8a7a70;
+        }
+
+        .surcharge-note strong {
+            color: #b87a5a;
+            font-weight: 400;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 18px;
+            }
+            .surcharge-note {
+                font-size: 11px;
+                gap: 6px 14px;
+                padding: 6px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== 主页面 ===== -->
+        <div id="mainPage">
+
+            <div class="header">
+                <h1>尽氏同行</h1>
+                <div class="sub">尽燚帝君 · 走江湖的人</div>
+                <div style="margin-top:10px; font-size:13px; color:#5a4a40;">
+                    <span>不拜三清</span><span>·</span>
+                    <span>不归天庭</span><span>·</span>
+                    <span>不听宣</span>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 我是谁 ===== -->
+            <div class="section">
+                <div class="section-title">我是谁</div>
+                <p>我是尽燚帝君。一个自己走过路的人。</p>
+                <p>我不属于任何门派，不传度，不受箓。法脉从一场火开始——七岁那年我没死，火留在了我身上，十一年后我才认出它。</p>
+                <p>我只做三件事：<strong style="color:#b87a5a;">度、判、送</strong>——度亡魂、判因果、送冤怨。这是我的根本职司。对活人，我只做一件事：<strong style="color:#dccfc6;">帮你看见你看不见的部分。</strong></p>
+                <p style="font-size:12px; color:#4a3a34; text-indent:0; margin-top:6px; letter-spacing:0.5px; border-left:2px solid #2a2220; padding-left:12px;">
+                    本工作室提供传统文化咨询与个人状态管理服务，所有内容均以语言沟通、信息分析为核心，不涉及超自然承诺，不替代法律、医疗、心理等专业咨询。
+                </p>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 天地人三法 ===== -->
+            <div class="section">
+                <div class="section-title">天地人三法</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0;">三法不参与折扣 · 需提前预约 · 不接急单</p>
+
+                <div class="sanfa-wrapper">
+                    <div class="sanfa-label">— <span>非常</span> · 常人不触 —</div>
+                    <div class="sanfa-grid">
+                        <div class="sanfa-card tian">
+                            <div class="sanfa-level">▎天</div>
+                            <div class="sanfa-name">太乙神数</div>
+                            <div class="sanfa-price">899 元</div>
+                            <div class="sanfa-sub">观天时 · 察国运 · 断大势</div>
+                            <div class="sanfa-desc">不涉个人小事，不答日常问题。推演天时流转，审度气运走向。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
+                        <div class="sanfa-card di">
+                            <div class="sanfa-level">▎地</div>
+                            <div class="sanfa-name">奇门遁甲</div>
+                            <div class="sanfa-price">499 元</div>
+                            <div class="sanfa-sub">择方位 · 定时机 · 布格局</div>
+                            <div class="sanfa-desc">大方向判断，关键节点决策。排盘复杂，需提供明确时间与背景。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
+                        <div class="sanfa-card ren">
+                            <div class="sanfa-level">▎人</div>
+                            <div class="sanfa-name">大六壬</div>
+                            <div class="sanfa-price">188 元</div>
+                            <div class="sanfa-sub">问具体事 · 断来龙去脉</div>
+                            <div class="sanfa-desc">九宗门课体，推演发展走向。个人层面需要深度剖析之事。</div>
+                            <div class="sanfa-tag">不可轻问</div>
+                        </div>
+                    </div>
+
+                    <!-- 三法限额规则 -->
+                    <div class="sanfa-rule">
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 三法行前需清斋断戒</span>（太乙5日 · 奇门3日 · 大六壬1-2日），对行法者精神力消耗极大，<span class="highlight">每月三法合计仅限1单</span>，先到先得。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 紧急插单</span>：当月名额已满仍坚持加单者，<span class="highlight">加价100%</span>。此规则不与常规加急及夜间附加费叠加。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:4px;">
+                            <span class="strong">· 极端情况</span>：原则上含插单每月总计不超过5单。超过5单仍强行加单者，<span class="highlight">加价1000%</span>。
+                        </p>
+                        <p style="text-indent:0; margin-bottom:0;">
+                            <span class="strong">· 最终封顶</span>：以上所有情况合计，<span class="highlight" style="color:#c49a7a;">每月天地人三法总计不超过10单</span>。超过10单，无论加价多少，均不再受理。<span style="color:#4a3a34;">此为铁律。</span>
+                        </p>
+                    </div>
+
+                    <div class="sanfa-note">
+                        <strong>私信说明事由</strong> → 确认是否可做 → 确认后再付款<br />
+                        三法不以术娱人，不以价拒人，但以诚为引。
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 占卜 ===== -->
+            <div class="section">
+                <div class="section-title">占卜</div>
+
+                <!-- 附加费说明 -->
+                <div class="surcharge-note">
+                    <span><strong>加急</strong> +35%</span>
+                    <span><strong>夜间</strong>（20:00后）+35%</span>
+                    <span><strong>叠加</strong> 最高 +70%</span>
+                    <span style="color:#5a4a40; font-size:11px;">（天地人三法及黑魔法破解不适用）</span>
+                </div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">塔罗 · 最低门槛</p>
+                <table class="price-table">
+                    <tr><td class="name">简单问事</td><td class="price">5.9元</td><td class="tag">一牌/三牌，直问直答</td></tr>
+                    <tr><td class="name">复杂解牌</td><td class="price">9.9–13.9元</td><td class="tag">按牌阵复杂度</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">轻量级 · 9.9元</p>
+                <table class="price-table">
+                    <tr><td class="name">灵摆占卜</td><td class="price">9.9元</td><td class="tag">一问一答</td></tr>
+                    <tr><td class="name">占星骰子</td><td class="price">9.9元</td><td class="tag">三颗骰子</td></tr>
+                    <tr><td class="name">小六壬</td><td class="price">9.9元</td><td class="tag">掌上起卦</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">标准级 · 15.9–19.9元</p>
+                <table class="price-table">
+                    <tr><td class="name">梅花易数</td><td class="price">15.9元</td><td class="tag">日常决策</td></tr>
+                    <tr><td class="name">手相/面相</td><td class="price">15.9元</td><td class="tag">需清晰照片</td></tr>
+                    <tr><td class="name">六爻</td><td class="price">19.9元</td><td class="tag">纳甲装卦</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">进阶级 · 29.9–88元</p>
+                <table class="price-table">
+                    <tr><td class="name">西方占星（本命盘）</td><td class="price">29.9元</td><td class="tag">出生时间+地点</td></tr>
+                    <tr><td class="name">八字命理</td><td class="price highlight">88元</td><td class="tag">排盘+大运+流年</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin:4px 0 10px;">八字四不看：不问生死 · 不信者不看 · 心不诚不看 · 涉及他人隐私不经同意不看</div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">尽氏镖门 · 火应占（自创）</p>
+                <table class="price-table">
+                    <tr><td class="name">一事一问</td><td class="price">19.9元</td><td class="tag">直接给结论</td></tr>
+                    <tr><td class="name">事由解析</td><td class="price">39.9元</td><td class="tag">结论+原因+注意事项</td></tr>
+                    <tr><td class="name">深度对话</td><td class="price">68元</td><td class="tag">语音沟通，约20–30分钟</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:4px;">· 六态三十六卦，不借外力 · 我自己走出来的体系</div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 副业 ===== -->
+            <div class="section">
+                <div class="section-title">副业</div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">物件类</p>
+                <table class="price-table">
+                    <tr><td class="name">老物件感应（远程）</td><td class="price">99元</td><td class="tag">拍照+来源</td></tr>
+                    <tr><td class="name">老物件感应+净化（远程）</td><td class="price">199元</td><td class="tag">感应+远程清理</td></tr>
+                    <tr><td class="name">物件深度清理（寄送）</td><td class="price">399元</td><td class="tag">邮费自理</td></tr>
+                    <tr><td class="name">随身物护持</td><td class="price">299元</td><td class="tag">开光+加持</td></tr>
+                    <tr><td class="name">老物件批量鉴定</td><td class="price">299元/批</td><td class="tag">≤5件</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">睡眠环境类</p>
+                <table class="price-table">
+                    <tr><td class="name">床位远程评估</td><td class="price">129元</td><td class="tag">布局图+床的位置</td></tr>
+                    <tr><td class="name">床位调整建议</td><td class="price">199元</td><td class="tag">评估+方案</td></tr>
+                    <tr><td class="name">床铺能量清理（远程）</td><td class="price">299元</td><td class="tag">不碰实物</td></tr>
+                    <tr><td class="name">卧室气场深度调理（远程）</td><td class="price">499元</td><td class="tag">含床位+全卧室</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">风水与宅居类</p>
+                <table class="price-table">
+                    <tr><td class="name">远程风水咨询（单点）</td><td class="price">199元</td><td class="tag">一个具体问题</td></tr>
+                    <tr><td class="name">远程风水咨询（全屋）</td><td class="price">499元</td><td class="tag">户型图+周边环境</td></tr>
+                    <tr><td class="name">实地风水勘查</td><td class="price">888–1888元</td><td class="tag">视距离+面积</td></tr>
+                    <tr><td class="name">风水布局调整（含行法）</td><td class="price">3000元起</td><td class="tag">需实地操作</td></tr>
+                    <tr><td class="name">镇宅服务（含法器）</td><td class="price">1500元起</td><td class="tag">定制镇宅方案</td></tr>
+                    <tr><td class="name">老宅综合评估（远程）</td><td class="price">399元</td><td class="tag">气场+地脉+居住建议</td></tr>
+                    <tr><td class="name">老宅深度清理（实地）</td><td class="price">3000元起</td><td class="tag">含度判送镇</td></tr>
+                    <tr><td class="name">新车/新房净场（远程）</td><td class="price">199元</td><td class="tag">入住/使用前</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">法事与实地服务</p>
+                <table class="price-table">
+                    <tr><td class="name">安葬选址与镇墓</td><td class="price">299–799元</td><td class="tag">含选址+镇墓</td></tr>
+                    <tr><td class="name">度化法事</td><td class="price">1888元起</td><td class="tag">度判送镇</td></tr>
+                    <tr><td class="name">做法事（特定需求）</td><td class="price">面议</td><td class="tag">私信说明事由</td></tr>
+                    <tr><td class="name">危险场所寻物</td><td class="price">888–1888元</td><td class="tag">坟场/废弃建筑/深山</td></tr>
+                    <tr><td class="name">危险场所代办</td><td class="price">面议</td><td class="tag">视危险程度</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">委托探险</p>
+                <table class="price-table">
+                    <tr><td class="name">短途委托探查（市内）</td><td class="price">666元</td><td class="tag">图文报告</td></tr>
+                    <tr><td class="name">短途委托探查（省内）</td><td class="price">999元</td><td class="tag">交通另计</td></tr>
+                    <tr><td class="name">长途委托探查（省外）</td><td class="price">1888元起</td><td class="tag">交通+住宿另计</td></tr>
+                    <tr><td class="name">复勘探查（多次往返）</td><td class="price">面议</td><td class="tag">反复出入同一地点</td></tr>
+                    <tr><td class="name">夜间特定时段探查</td><td class="price">原价+30%</td><td class="tag">入夜后进行的委托</td></tr>
+                    <tr><td class="name">委托拍照/取证</td><td class="price">299元起</td><td class="tag">不需要深度探查</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">杂项</p>
+                <table class="price-table">
+                    <tr><td class="name">出差/旅行护身</td><td class="price">99元</td><td class="tag">远程护持</td></tr>
+                    <tr><td class="name">宠物环境评估</td><td class="price">129元</td><td class="tag">远程查看</td></tr>
+                </table>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 符咒 ===== -->
+            <div class="section">
+                <div class="section-title">符咒</div>
+                <table class="price-table">
+                    <tr><td class="name">护身符</td><td class="price">69元</td><td class="tag">随身携带，效期七日</td></tr>
+                    <tr><td class="name">镇宅符</td><td class="price">99元</td><td class="tag">贴门框，效期一月</td></tr>
+                    <tr><td class="name">开路符</td><td class="price">79元</td><td class="tag">出行佩戴，一次行程</td></tr>
+                    <tr><td class="name">度亡符</td><td class="price">99元</td><td class="tag">丧事/祭扫</td></tr>
+                    <tr><td class="name">解怨符</td><td class="price">99元</td><td class="tag">化解怨气</td></tr>
+                    <tr><td class="name">退邪符</td><td class="price">109元</td><td class="tag">驱退邪祟</td></tr>
+                    <tr><td class="name">安眠符</td><td class="price">69元</td><td class="tag">贴床板下或枕下</td></tr>
+                    <tr><td class="name">守运符</td><td class="price">99元</td><td class="tag">守住好运，效期一月</td></tr>
+                    <tr><td class="name">招财符</td><td class="price">109元</td><td class="tag">贴钱柜，效期一月</td></tr>
+                    <tr><td class="name">引梦符</td><td class="price">79元</td><td class="tag">引导梦境，效期一夜</td></tr>
+                    <tr><td class="name">禁言符</td><td class="price">89元</td><td class="tag">封禁口舌，效期七日</td></tr>
+                    <tr><td class="name">通感符</td><td class="price">99元</td><td class="tag">增强感应</td></tr>
+                    <tr><td class="name">缚杀令</td><td class="price">299元</td><td class="tag">活捉压制，效期六个时辰</td></tr>
+                    <tr><td class="name">止杀令</td><td class="price">面议</td><td class="tag">最高级符令</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:6px;">套餐：搬家三件套（镇宅+护身+开路）219元 · 守护全家包（镇宅+护身×3）299元 · 凶宅清理包（镇宅+退邪+度亡）289元</div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 课程 ===== -->
+            <div class="section">
+                <div class="section-title">课程</div>
+
+                <div class="course-note">
+                    <p style="text-indent:0; margin-bottom:8px;"><strong>课程说明</strong></p>
+                    <p style="text-indent:0; font-size:14px; color:#b0a298; margin-bottom:6px;">在咨询课程之前，请先看完这段话。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298;">我们的课程不是“花钱买知识”，而是“花时间学本事”。这里教的每一门课——从火应占到奇门遁甲，从感应训练到度法实战——都需要你投入精力去练、去用、去反复验证，而不是听完就结束。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298; margin-top:8px;">如果你只是出于好奇、或是一时兴起想了解一下，我们不建议直接报课。你完全可以从单次咨询开始，先感受一下这个体系的氛围和节奏。等到你确实觉得“这就是我想走的方向”，再考虑学习也不迟。</p>
+                    <p style="text-indent:2em; font-size:14px; color:#b0a298; margin-top:8px;">课程不参与会员折扣，不与任何优惠叠加。所有课程先沟通确认后再付款。</p>
+                </div>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px; margin-top:16px;">基础课程</p>
+                <table class="price-table">
+                    <tr><td class="name">静坐观火法</td><td class="price">499元</td><td class="tag">1小时，线上教学</td></tr>
+                    <tr><td class="name">感应训练入门</td><td class="price">699元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">火应占入门</td><td class="price">799元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">护身符咒绘制</td><td class="price">599元</td><td class="tag">1小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">进阶课程</p>
+                <table class="price-table">
+                    <tr><td class="name">梅花易数实战</td><td class="price">899元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">六爻实战</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">八字命理</td><td class="price">1299元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">家居风水</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                    <tr><td class="name">感应精修</td><td class="price">999元</td><td class="tag">1.5小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">高阶课程</p>
+                <table class="price-table">
+                    <tr><td class="name">奇门遁甲</td><td class="price">1999元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">大六壬</td><td class="price">1999元</td><td class="tag">2小时，线上教学</td></tr>
+                    <tr><td class="name">度法实战</td><td class="price">2299元</td><td class="tag">2小时，线上教学</td></tr>
+                </table>
+
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin:16px 0 6px;">一对一定制</p>
+                <table class="price-table">
+                    <tr><td class="name">指定科目一对一（线上）</td><td class="price">1200元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">指定科目一对一（线下）</td><td class="price">2000元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">实战陪跑（线上指导）</td><td class="price">1200元/小时</td><td class="tag">按实际时长计费</td></tr>
+                    <tr><td class="name">全年私教</td><td class="price">29800元/年</td><td class="tag">不限次，线上+线下</td></tr>
+                    <tr><td class="name">师徒制（需审核）</td><td class="price">面议</td><td class="tag">长期跟随</td></tr>
+                </table>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 收徒 ===== -->
+            <div class="section">
+                <div class="section-title">收徒</div>
+                <div style="font-size:14px; color:#b0a298; line-height:1.9; padding:0 4px;">
+                    <p style="text-indent:0; margin-bottom:4px;">眼缘为先。若觉得合适，可直接收入门下。徒弟课程免费，须纳入镖局体系，不得私自开班，违者罚款无上限。</p>
+                    <p style="text-indent:0; margin-top:4px;">眼缘未过者，可申请补录。提交书面申请并缴纳申请费200元（不退）。通过者入弟子序列，未通过则不再受理。</p>
+                    <p style="text-indent:0; margin-top:8px; font-size:13px; color:#5a4a40; border-left:2px solid #2a2220; padding-left:14px;">随缘，不勉强，不解释。</p>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 会员 ===== -->
+            <div class="section">
+                <div class="section-title">会员体系</div>
+                <div style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:12px;">所有普通占卜/副业/符咒享受对应折扣 · 课程与天地人三法不参与</div>
+                <div class="member-box">
+                    <div class="member-card">
+                        <h4>普通会员</h4>
+                        <div class="discount">8.5折</div>
+                        <div class="price-row">月付 5.9元 <span>|</span> 季付 16.9元</div>
+                        <div class="price-row">半年付 32.9元 <span>|</span> 年付 58元</div>
+                        <ul>
+                            <li>编号火印符（木牌信物）</li>
+                            <li>线上交流空间</li>
+                            <li>每月一次免费问事</li>
+                            <li>所有服务 8.5 折</li>
+                        </ul>
+                    </div>
+                    <div class="member-card" style="border-color:#5a4036;">
+                        <h4>核心会员</h4>
+                        <div class="discount">7.5折</div>
+                        <div class="price-row">月付 12.9元 <span>|</span> 季付 36.9元</div>
+                        <div class="price-row">半年付 71.9元 <span>|</span> 年付 128元</div>
+                        <ul>
+                            <li>编号火印符（木牌信物）</li>
+                            <li>线上交流空间</li>
+                            <li>不限次免费问事</li>
+                            <li>所有服务 7.5 折</li>
+                            <li>每季度一次主动提醒</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- ===== 联系方式 ===== -->
+            <div class="section">
+                <div class="section-title">怎么找到我</div>
+                <div class="contact-grid">
+                    <div class="item"><strong>QQ</strong> 1397961035</div>
+                    <div class="item"><strong>微信</strong> zqxbsxx</div>
+                    <div class="item"><strong>电话</strong> 18679105201</div>
+                </div>
+                <div style="font-size:13px; color:#6a5a50; margin-top:6px;">私信说明来意 · 确认后再付款 · 不问完不收钱</div>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- 底部 -->
+            <div class="footer-note" style="cursor:default;">
+                <span class="clickable" id="slogan">镖局出品，必属精品</span>
+                <br /><br />
+                我是走江湖的人，顺便帮看得见的人指一指路。<br />
+                不是大师，不收徒，不传法。<br />
+                你来了或走了，不影响我继续走自己的路。
+            </div>
+
+        </div>
+        <!-- ===== 主页面结束 ===== -->
+
+
+        <!-- ===== 黑魔法隐藏区块 ===== -->
+        <div id="blackMagicSection">
+            <div class="black-magic-header">
+                <h2>黑魔法 · 防范与揭露</h2>
+                <div class="sub">不提供任何操作指导 · 仅限防范与揭露</div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">关于黑魔法</div>
+                <p>黑魔法、巫术、诅咒、扎小人——这些东西在民间一直存在。有人信，有人用，有人受害。</p>
+                <p>我们不教授这些方法，也不提供相关操作指导。此页面只用于帮助普通人识别、防范和应对可疑的异常情况，以便在需要时判断是否需要向相关机构求助。</p>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">你可能遇到的情况</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:8px;">以下列举一些民间流传的异常迹象，仅作为常识参考，不涉及具体技术细节：</p>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            家门口或院墙外出现来历不明的包裹、纸片、布偶、红绳
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            家中无故出现异味、异响、物品移位且无法解释
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            特定家庭成员连续出现身体不适或情绪异常，多方检查无明确医学原因
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            宠物在某个特定位置持续表现恐惧或抗拒行为
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            近期与人发生严重冲突后，家中出现前述异常迹象
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            收到带有明显威胁性质的“物品”或“信息”，其来源、内容、传递方式均无法合理解释
+                        </li>
+                    </ul>
+                    <div style="font-size:13px; color:#5a4a40; margin-top:6px;">· 以上情况不能直接等同于“被施法”，但值得留意观察 ·</div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">防范建议</div>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <p style="text-indent:0; margin-bottom:10px;">如果你怀疑自己可能遇到了异常情况，以下是一些可以参考的做法：</p>
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">保留原样</strong> — 不要急于清理或移动可疑物品，先拍照记录位置和状态
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">注意记录</strong> — 记录异常开始的时间和日常变化，便于后续判断
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">保持警惕</strong> — 避免与非紧急情况下的陌生人深入讨论家中细节
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">寻求帮助</strong> — 涉及人身安全的异常情况，应及时向警方或相关机构求助
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            <strong style="color:#b07a6a; font-weight:400;">自己需要帮助</strong> — 如果你怀疑自己受到了影响，可以私信咨询，我会在保护你隐私的前提下给你建议
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">常见误解</div>
+                <div style="font-size:14px; color:#c0b4a8;">
+                    <ul style="list-style:none; padding:0;">
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “黑魔法一定有效” — 大部分所谓“诅咒”只是心理暗示，真正有效的极其罕见
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “只要不碰就没事” — 有些异常情况会通过环境、气场或长期接触产生影响
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098; border-bottom:1px solid #1a1412;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “这是迷信，不相信就没有” — 有些东西与信不信无关，它确实存在，只是还没被科学解释
+                        </li>
+                        <li style="padding:6px 0 6px 18px; position:relative; color:#b0a098;">
+                            <span style="position:absolute; left:0; color:#5a3a32;">·</span>
+                            “遇到这种情况必须找大师破解” — 大部分情况可以通过物理清理、环境调整或时间自然消退
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">黑魔法破解 · 专项服务</div>
+                <p style="font-size:14px; color:#8a7a70; text-indent:0; margin-bottom:6px;">本服务不参与任何折扣，需提前说明事由确认是否可接。</p>
+                <table class="price-table">
+                    <tr><td class="name">黑魔法/黑巫术破解（远程）</td><td class="price">3888元起</td><td class="tag">含感应+反制+清理+护持</td></tr>
+                    <tr><td class="name">黑魔法/黑巫术破解（实地）</td><td class="price">8888元起</td><td class="tag">需到场处理，含差旅</td></tr>
+                    <tr><td class="name">诅咒/扎小人破解（远程）</td><td class="price">2888元起</td><td class="tag">含诅咒物感应+破除+护持</td></tr>
+                    <tr><td class="name">持续性恶意干扰清除</td><td class="price">5888元起</td><td class="tag">长期被盯上的情况</td></tr>
+                    <tr><td class="name">反噬清理（自己试过但出问题了）</td><td class="price">4888元起</td><td class="tag">你来收尾</td></tr>
+                </table>
+                <div style="font-size:12px; color:#5a4a40; margin-top:6px;">· 不接“我觉得有人搞我”但无任何证据的情况 · 不承诺一定解决，但会尽力 · 差旅费另算</div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">配合警方</div>
+                <div class="warning-box">
+                    <p style="text-indent:0; font-size:15px;">
+                        <strong>如果涉及人身安全、财产损失或违法行为，我们会配合警方处理。</strong>
+                    </p>
+                    <p style="text-indent:0; font-size:14px; color:#b0a098;">
+                        我们不会主动介入任何涉及违法行为的案件，也不提供任何可用于伤害他人的术法指导。如有涉及违反法律法规的情况，我们将依法配合公安机关调查。
+                    </p>
+                    <ul>
+                        <li>不提供任何形式的“报复”或“反击”指导</li>
+                        <li>不参与任何非法行为</li>
+                        <li>如果确认对方的行为已触犯法律，建议优先报警</li>
+                        <li>可在征得警方同意的前提下提供相关专业咨询</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="section black-magic-section">
+                <div class="section-title">私信咨询</div>
+                <p>如果你确实遇到了异常情况，可以通过以下方式咨询。我会在保护你隐私的前提下，给出判断和建议。</p>
+                <p style="text-indent:0; font-size:14px; color:#6a5a50;">私信需要说明：你遇到了什么、什么时候开始的、有没有明显的变化。</p>
+                <div style="background:#1a1412; border:1px solid #2a2220; border-radius:10px; padding:16px 20px; margin:14px 0 6px;">
+                    <div style="font-size:14px; color:#d4c4b8; display:flex; flex-wrap:wrap; gap:10px 30px;">
+                        <span><strong style="color:#7a4a3a; font-weight:400;">QQ</strong> 1397961035</span>
+                        <span><strong style="color:#7a4a3a; font-weight:400;">微信</strong> zqxbsxx</span>
+                        <span><strong style="color:#7a4a3a; font-weight:400;">电话</strong> 18679105201</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="footer-note">
+                <span style="color:#5a3a32;">镖局出品，必属精品</span>
+                <br /><br />
+                此页面仅用于防范与揭露，不提供任何操作指导。<br />
+                我是走江湖的人，帮看得见的人指一指路。<br />
+                不是大师，不收徒，不传法。
+            </div>
+        </div>
+        <!-- ===== 黑魔法区块结束 ===== -->
+
+    </div>
+
+    <script>
+        let clickCount = 0;
+        let clickTimer = null;
+        let blackMagicVisible = false;
+
+        document.getElementById('slogan').addEventListener('click', function(e) {
+            clickCount++;
+
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 2000);
+
+            if (clickCount >= 3) {
+                clickCount = 0;
+                clearTimeout(clickTimer);
+
+                const blackMagicSection = document.getElementById('blackMagicSection');
+
+                if (!blackMagicVisible) {
+                    blackMagicSection.style.display = 'block';
+                    blackMagicVisible = true;
+                    setTimeout(() => {
+                        blackMagicSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                } else {
+                    blackMagicSection.style.display = 'none';
+                    blackMagicVisible = false;
+                }
+            }
+        });
+    </script>
+
+    <!-- 确保GitHub Pages不被Jekyll构建：在仓库根目录创建 .nojekyll 文件 -->
+</body>
+</html>
